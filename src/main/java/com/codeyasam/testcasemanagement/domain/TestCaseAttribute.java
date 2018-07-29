@@ -3,14 +3,14 @@ package com.codeyasam.testcasemanagement.domain;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class TestCaseAttributes {
+public class TestCaseAttribute {
 	
 	private Long batchId;
 	private String description;
 	private String location;
 	private int priority;
-	private boolean isSmoke;
-	private boolean isMandatory;
+	private Boolean isSmoke;
+	private Boolean isMandatory;
 	
 	public Long getBatchId() {
 		return batchId;
@@ -42,10 +42,10 @@ public class TestCaseAttributes {
 	public void setIsSmoke(boolean isSmoke) {
 		this.isSmoke = isSmoke;
 	}
-	public boolean isMandatory() {
+	public boolean getIsMandatory() {
 		return isMandatory;
 	}
-	public void setMandatory(boolean isMandatory) {
+	public void setIsMandatory(boolean isMandatory) {
 		this.isMandatory = isMandatory;
 	}
 	

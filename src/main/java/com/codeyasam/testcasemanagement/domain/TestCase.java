@@ -29,7 +29,7 @@ public class TestCase {
 	private Set<Module> modules;
 	
 	@Embedded
-	private TestCaseAttributes testCaseAttributes;
+	private TestCaseAttribute testCaseAttribute;
 	
 	public long getId() {
 		return id;
@@ -55,10 +55,10 @@ public class TestCase {
 	public void setModules(Set<Module> modules) {
 		this.modules = modules;
 	}
-	public TestCaseAttributes getTestCaseAttributes() {
-		return testCaseAttributes;
+	public TestCaseAttribute getTestCaseAttribute() {
+		return testCaseAttribute;
 	}
-	public void setTestCaseAttributes(TestCaseAttributes testCaseAttributes) {
-		this.testCaseAttributes = testCaseAttributes;
+	public void setTestCaseAttribute(TestCaseAttribute testCaseAttributes) {
+		this.testCaseAttribute = testCaseAttributes;
 	}	
 }
