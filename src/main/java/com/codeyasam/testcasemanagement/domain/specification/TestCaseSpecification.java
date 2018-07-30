@@ -57,7 +57,7 @@ public class TestCaseSpecification {
 			
 			if (testCaseSearchDTO.getType().equals(ALL)) {
 				Predicate or  = builder.or(id, name, description, location);
-				Predicate all = builder.and(name, exists, priority, isSmoke, isMandatory);
+				Predicate all = builder.and(or, name, exists, priority, isSmoke, isMandatory);
 				return all;
 			} else if (testCaseSearchDTO.getType().equals(NAME)) {
 				return builder.and(name, exists, priority, isSmoke, isMandatory);
