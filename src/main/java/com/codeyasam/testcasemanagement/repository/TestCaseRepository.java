@@ -21,7 +21,7 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
 	Page<TestCase> findByModulesIdAndMachinesIdNotNull(Long id, Pageable pageable);
 	Page<TestCase> findDistinctByMachinesIdIn(List<Long> idList, Pageable pageable);
 	Page<TestCase> findByTestCaseAttributeBatchIdNotNullOrderByTestCaseAttributeBatchId(Pageable pageable);
-	Page<TestCase> findByIdIn(List<Long> idList);
+	Page<TestCase> findByIdIn(List<Long> idList, Pageable pageable);
 	Page<TestCase> findAll(Specification<TestCase> specification, Pageable pageable);
 	
 	Long countByModulesId(long id);
