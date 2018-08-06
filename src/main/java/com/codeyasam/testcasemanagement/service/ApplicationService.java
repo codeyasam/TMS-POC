@@ -31,8 +31,22 @@ public class ApplicationService {
 		return applicationRepository.save(application);
 	}
 	
+	public Application deleteApplication(Application application) {
+		application = applicationRepository.findOne(application.getId());
+		applicationRepository.delete(application);
+		return application;
+	}
+	
 	public List<Application> retrieveAll(Pageable pageable) {
 		return applicationRepository.findAll(pageable).getContent();
+	}
+	
+	public long countAll() {
+		return applicationRepository.count();
+	}
+	
+	public Application searchById(long id) {
+		return applicationRepository.findOne(id);
 	}
 	
 	public Application searchByName(String name) {
