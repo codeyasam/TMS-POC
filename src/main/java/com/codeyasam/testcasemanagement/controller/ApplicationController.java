@@ -115,8 +115,8 @@ public class ApplicationController {
 	
 	@RequestMapping(value="/import", method=RequestMethod.POST)
 	public ResponseEntity<String> importApplicationList(@RequestParam("file") MultipartFile multipartFile) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-		String path = Paths.get("target", "tmp_uploads").toAbsolutePath().toString();
-		File fileToImport = new File(path + "/" + multipartFile.getOriginalFilename());
+		String path = Paths.get("target", "tmp_uploads", multipartFile.getOriginalFilename()).toAbsolutePath().toString();
+		File fileToImport = new File(path);
 		OutputStream outputStream = new FileOutputStream(fileToImport);
 		IOUtils.copy(multipartFile.getInputStream(), outputStream);
 		outputStream.flush();
