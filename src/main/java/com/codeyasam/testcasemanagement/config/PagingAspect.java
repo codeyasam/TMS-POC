@@ -2,12 +2,14 @@ package com.codeyasam.testcasemanagement.config;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class PagingAspect {
 	
 	@Pointcut("within(com.citco.qa.system.restcontroller.*) && (args(pageable,..) || args(..,pageable))")
