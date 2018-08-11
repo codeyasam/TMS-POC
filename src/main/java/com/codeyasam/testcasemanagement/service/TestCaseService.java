@@ -47,6 +47,14 @@ public class TestCaseService {
 		return testCaseRepository.findByName(name);
 	}
 	
+	public List<TestCase> retrieveTestCasesByIdIn(List<Long> idList, Pageable pageable) {
+		return testCaseRepository.findByIdIn(idList, pageable).getContent();
+	}
+	
+	public Long countByIdIn(List<Long> idList) {
+		return testCaseRepository.countByIdIn(idList);
+	}
+	
 	public List<TestCase> retrieveTestCasesByModuleId(Long id, Pageable pageable) {
 		return testCaseRepository.findByModulesId(id, pageable).getContent();
 	}

@@ -18,7 +18,8 @@ public class ModuleService {
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	public ModuleService(ModuleRepository moduleRepository, ModelMapper modelMapper) {
+	public ModuleService(ModuleRepository moduleRepository, 
+			ModelMapper modelMapper) {
 		this.moduleRepository = moduleRepository;
 		this.modelMapper = modelMapper;
 	}
@@ -31,8 +32,18 @@ public class ModuleService {
 		return moduleRepository.save(module);
 	}
 	
+	public Module deleteModule(Module module) {
+		module = moduleRepository.findOne(module.getId());
+		moduleRepository.delete(module);
+		return module;
+	}
+	
 	public List<Module> retrieveAll(Pageable pageable) {
 		return moduleRepository.findAll(pageable).getContent();
+	}
+	
+	public Long countAll() {
+		return moduleRepository.count();
 	}
 	
 	public List<Module> searchByApplicationId(Long id, Pageable pageable) {
