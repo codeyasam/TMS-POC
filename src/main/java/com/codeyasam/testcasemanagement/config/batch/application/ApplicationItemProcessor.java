@@ -1,4 +1,4 @@
-package com.codeyasam.testcasemanagement.config.batch;
+package com.codeyasam.testcasemanagement.config.batch.application;
 
 import org.springframework.batch.item.ItemProcessor;
 
