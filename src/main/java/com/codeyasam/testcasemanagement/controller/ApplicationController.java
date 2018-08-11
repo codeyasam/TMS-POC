@@ -34,6 +34,10 @@ import com.codeyasam.testcasemanagement.dto.MultipleDataResponse;
 import com.codeyasam.testcasemanagement.dto.SingleDataResponse;
 import com.codeyasam.testcasemanagement.service.ApplicationService;
 
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEMPORARY_UPLOADS_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.APPLICATION_CSV_FILENAME;
+
 @RestController
 @RequestMapping(value="/applications")
 public class ApplicationController {
@@ -114,8 +118,8 @@ public class ApplicationController {
 	}
 	
 	@RequestMapping(value="/import", method=RequestMethod.POST)
-	public ResponseEntity<String> importApplicationList(@RequestParam("file") MultipartFile multipartFile) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-		String path = Paths.get("target", "tmp_uploads", multipartFile.getOriginalFilename()).toAbsolutePath().toString();
+	public ResponseEntity<HttpStatus> importApplicationList(@RequestParam("file") MultipartFile multipartFile) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+		String path = Paths.get(TARGET_FOLDER, TEMPORARY_UPLOADS_FOLDER, APPLICATION_CSV_FILENAME).toAbsolutePath().toString();
 		File fileToImport = new File(path);
 		OutputStream outputStream = new FileOutputStream(fileToImport);
 		IOUtils.copy(multipartFile.getInputStream(), outputStream);

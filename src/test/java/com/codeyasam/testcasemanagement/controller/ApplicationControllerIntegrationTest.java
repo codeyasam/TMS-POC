@@ -1,13 +1,10 @@
 package com.codeyasam.testcasemanagement.controller;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -22,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEST_UPLOADS_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEST_APPLICATION_CSV_FILENAME;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class ApplicationControllerIntegrationTest {
@@ -31,12 +32,12 @@ public class ApplicationControllerIntegrationTest {
 	
 	@Test
 	public void importApplicationList() throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-		String path = Paths.get("target", "tmp_uploads", "Application.csv").toAbsolutePath().toString();
+		String path = Paths.get(TARGET_FOLDER, TEST_UPLOADS_FOLDER, TEST_APPLICATION_CSV_FILENAME).toAbsolutePath().toString();
 		FileInputStream inputFile = new FileInputStream(path);
-		MockMultipartFile multipartFile = new MockMultipartFile("file", "Application.csv", "multipart/form-data", inputFile);
-		ResponseEntity<String> response = applicationController.importApplicationList(multipartFile);
-
-		assertThat(response.getStatusCode(), is(equalTo(HttpStatus.OK)));
-		assertThat(applicationController.retrieveAll(null).getTotal(), is(equalTo(3L)));
+		MockMultipartFile multipartFile = new MockMultipartFile("file", TEST_APPLICATION_CSV_FILENAME, "multipart/form-data", inputFile);
+		ResponseEntity<HttpStatus> response = applicationController.importApplicationList(multipartFile);
+		
+		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
+		Assert.assertEquals(applicationController.retrieveAll(null).getTotal(), 4L);
 	}
 }
