@@ -59,15 +59,15 @@ public class TestCaseService {
 		return testCaseRepository.findByModulesId(id, pageable).getContent();
 	}
 	
-	public Long countByModulesId(Long id) {
+	public Long countByModuleId(Long id) {
 		return testCaseRepository.countByModulesId(id);
 	}
 	
-	public List<TestCase> retrieveTestCasesByMachinesId(Long id, Pageable pageable) {
+	public List<TestCase> retrieveTestCasesByMachineId(Long id, Pageable pageable) {
 		return testCaseRepository.findByMachinesId(id, pageable).getContent();
 	}
 	
-	public Long counByMachinesId(long id) {
+	public long countByMachineId(long id) {
 		return testCaseRepository.countByMachinesId(id);
 	}
 	

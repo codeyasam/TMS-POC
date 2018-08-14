@@ -31,8 +31,22 @@ public class MachineService {
 		return machineRepository.save(machine);
 	}
 	
+	public Machine deleteMachine(Machine machine) {
+		machine = machineRepository.findOne(machine.getId());
+		machineRepository.delete(machine);
+		return machine;
+	}
+	
 	public List<Machine> retrieveAll(Pageable pageable) {
 		return machineRepository.findAll(pageable).getContent();
+	}
+	
+	public long countAll() {
+		return machineRepository.count();
+	}
+	
+	public Machine searchById(long id) {
+		return machineRepository.findOne(id);
 	}
 	
 	public Machine searchByName(String name) {
