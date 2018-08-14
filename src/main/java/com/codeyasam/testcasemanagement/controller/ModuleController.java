@@ -32,9 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.codeyasam.testcasemanagement.domain.Module;
 import com.codeyasam.testcasemanagement.domain.TestCase;
 import com.codeyasam.testcasemanagement.dto.ModuleDTO;
-import com.codeyasam.testcasemanagement.dto.MultipleDataResponse;
-import com.codeyasam.testcasemanagement.dto.SingleDataResponse;
 import com.codeyasam.testcasemanagement.dto.TestCaseDTO;
+import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
+import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
 import com.codeyasam.testcasemanagement.service.ModuleService;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
 
@@ -148,7 +148,7 @@ public class ModuleController {
 				.map(testCase -> testCaseService.convertToDTO(testCase))
 				.collect(Collectors.toList());
 		response.setData(testCaseDTOList);
-		response.setTotal(testCaseService.countByModulesId(id));
+		response.setTotal(testCaseService.countByModuleId(id));
 		response.setPrompt("Successfully retrieved test cases by module id.");
 		response.setStatus(HttpStatus.OK.value());
 		return response;

@@ -1,4 +1,4 @@
-package com.codeyasam.testcasemanagement.dto;
+package com.codeyasam.testcasemanagement.dto.response;
 
 public abstract class DataResponse {
 	

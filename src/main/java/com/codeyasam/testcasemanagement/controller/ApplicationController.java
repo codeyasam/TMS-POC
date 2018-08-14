@@ -30,8 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.codeyasam.testcasemanagement.domain.Application;
 import com.codeyasam.testcasemanagement.dto.ApplicationDTO;
-import com.codeyasam.testcasemanagement.dto.MultipleDataResponse;
-import com.codeyasam.testcasemanagement.dto.SingleDataResponse;
+import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
+import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
 import com.codeyasam.testcasemanagement.service.ApplicationService;
 
 import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
