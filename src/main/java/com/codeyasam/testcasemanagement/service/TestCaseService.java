@@ -31,6 +31,12 @@ public class TestCaseService {
 		return testCaseRepository.save(testCase);
 	}
 	
+	public TestCase deleteTestCase(TestCase testCase) {
+		testCase = testCaseRepository.findOne(testCase.getId());
+		testCaseRepository.delete(testCase);
+		return testCase;
+	}
+	
 	public List<TestCase> retrieveAll(Pageable pageable) {
 		return testCaseRepository.findAll(pageable).getContent();
 	}
