@@ -26,14 +26,16 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
 	
 	Long countByModulesId(long id);
 	Long countByMachinesId(long id);
-	Long countByMachinesIdNotNull(long id);
-	Long countByModulesIdNotNull(long id);
+	Long countByMachinesIdNotNull();
+	Long countByModulesIdNotNull();
 	Long countByModulesApplicationIdAndMachinesIdNotNull(long id);
 	Long countByModulesIdAndMachinesIdNotNull(long id);
 	Long countDistinctByMachinesIdIn(List<Long> idList);
 	Long countByTestCaseAttributeBatchIdNotNull();
 	Long countByIdIn(List<Long> idList);
 	
-	@Query("SELECT count(t) FROM TestCase t GROUP BY t.testCaseAttribute.batchId")
+//	@Query("SELECT count(t) FROM TestCase t GROUP BY t.testCaseAttribute.batchId")
+//	Long queryDistinctBatchIdCount();
+	@Query("SELECT count(t) FROM TestCase t")
 	Long queryDistinctBatchIdCount();
 }

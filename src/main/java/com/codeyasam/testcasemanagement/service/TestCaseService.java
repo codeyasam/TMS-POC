@@ -2,24 +2,37 @@ package com.codeyasam.testcasemanagement.service;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.codeyasam.testcasemanagement.domain.TestCase;
+import com.codeyasam.testcasemanagement.domain.specification.TestCaseSpecification;
 import com.codeyasam.testcasemanagement.dto.TestCaseDTO;
+import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 import com.codeyasam.testcasemanagement.repository.TestCaseRepository;
 
 @Service
 public class TestCaseService {
 	
 	private TestCaseRepository testCaseRepository;
+	private EntityManager entityManager;
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	public TestCaseService(TestCaseRepository testCaseRepository, ModelMapper modelMapper) {
+	public TestCaseService(TestCaseRepository testCaseRepository,
+			EntityManager entityManager,
+			ModelMapper modelMapper) {
 		this.testCaseRepository = testCaseRepository;
+		this.entityManager = entityManager;
 		this.modelMapper = modelMapper;
 	}
 	
@@ -65,7 +78,7 @@ public class TestCaseService {
 		return testCaseRepository.findByModulesId(id, pageable).getContent();
 	}
 	
-	public Long countByModuleId(Long id) {
+	public long countByModuleId(long id) {
 		return testCaseRepository.countByModulesId(id);
 	}
 	
@@ -87,6 +100,53 @@ public class TestCaseService {
 	
 	public Long countDistinctBatchId() {
 		return testCaseRepository.queryDistinctBatchIdCount();
+	}
+	
+	public List<TestCase> retrieveTestCasesByMachinesIdNotNull(Pageable pageable) {
+		return testCaseRepository.findByMachinesIdNotNull(pageable).getContent();
+	}
+	
+	public Long countByMachinesIdNotNull() {
+		return testCaseRepository.countByMachinesIdNotNull();
+	}
+	
+	public List<TestCase> retrieveTestCasesByModulesIdNotNull(Pageable pageable) {
+		return testCaseRepository.findByModulesIdNotNull(pageable).getContent();
+	}
+	
+	public Long countByModulesIdNotNull() {
+		return testCaseRepository.countByModulesIdNotNull();
+	}
+	
+	public List<TestCase> retrieveTestCasesByApplicationIdWhereModulesIdNotNull(long id, Pageable pageable) {
+		return testCaseRepository.findByModulesApplicationIdAndMachinesIdNotNull(id, pageable).getContent();
+	}
+	
+	public long countByApplicationIdWhereModulesIdNotNull(long id) {
+		return testCaseRepository.countByModulesApplicationIdAndMachinesIdNotNull(id);
+	}
+	
+	public List<TestCase> retrieveTestCasesByModuleIdWhereMachinesIdNotNull(long id, Pageable pageable) {
+		return testCaseRepository.findByModulesIdAndMachinesIdNotNull(id, pageable).getContent();
+	}
+	
+	public long countByModuleIdWhereMachinesIdNotNull(long id) {
+		return testCaseRepository.countByModulesIdAndMachinesIdNotNull(id);
+	}
+	
+	public List<TestCase> retrieveTestCasesBySpecification(Specification<TestCase> specification, Pageable pageable) {
+		return testCaseRepository.findAll(specification, pageable).getContent();
+	}
+	
+	public long countBySpecification(TestCaseSearchDTO testCaseSearchDTO) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<TestCase> root = criteriaQuery.from(TestCase.class);
+		criteriaQuery.select(criteriaBuilder.count(root));
+		Predicate restrictions = TestCaseSpecification.defineSpecification(testCaseSearchDTO)
+				.toPredicate(root, criteriaQuery, criteriaBuilder);
+		criteriaQuery.where(restrictions);
+		return entityManager.createQuery(criteriaQuery).getSingleResult();
 	}
 	
 	public TestCaseDTO convertToDTO(TestCase testCase) {

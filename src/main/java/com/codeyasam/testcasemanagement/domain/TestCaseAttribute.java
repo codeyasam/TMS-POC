@@ -36,17 +36,16 @@ public class TestCaseAttribute {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-	public boolean getIsSmoke() {
+	public Boolean getIsSmoke() {
 		return isSmoke;
 	}
-	public void setIsSmoke(boolean isSmoke) {
+	public void setIsSmoke(Boolean isSmoke) {
 		this.isSmoke = isSmoke;
 	}
-	public boolean getIsMandatory() {
+	public Boolean getIsMandatory() {
 		return isMandatory;
 	}
-	public void setIsMandatory(boolean isMandatory) {
+	public void setIsMandatory(Boolean isMandatory) {
 		this.isMandatory = isMandatory;
-	}
-	
+	}	
 }
