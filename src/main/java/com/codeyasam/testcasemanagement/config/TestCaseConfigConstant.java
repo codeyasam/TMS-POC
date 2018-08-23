@@ -7,7 +7,7 @@ public class TestCaseConfigConstant {
 	public static final String APPLICATION_CSV_FILENAME = "Applications.csv";
 	public static final String MODULE_CSV_FILENAME = "Modules.csv";
 	public static final String MACHINE_CSV_FILENAME = "Machines.csv";
-	public static final String TESTCASE_CSV_FILENAME = "TestCases.csv";
+	public static final String TESTCASE_CSV_FILENAME = "TestCases";
 	
 	//test environment
 	public static final String TEST_UPLOADS_FOLDER = "test_uploads";

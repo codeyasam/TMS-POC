@@ -239,15 +239,17 @@ public class TestCaseController {
 	
 	@RequestMapping(value="/importTestCases", method=RequestMethod.POST)
 	public ResponseEntity<HttpStatus> importTestCase(@RequestParam("file") MultipartFile multipartFile, @RequestParam("moduleId") long moduleId) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+		BatchUploadType batchUploadType = BatchUploadType.TESTCASE;
+		long batchId = batchUploadService.createBatchUpload(new BatchUpload(batchUploadType)).getId();
+		
 		String path = Paths.get(TARGET_FOLDER, TEMPORARY_UPLOADS_FOLDER, TESTCASE_CSV_FILENAME).toAbsolutePath().toString();
+		path = String.format("%s-%d.csv", path, batchId);
 		File fileToImport = new File(path);
 		OutputStream outputStream = new FileOutputStream(fileToImport);
 		IOUtils.copy(multipartFile.getInputStream(), outputStream);
 		outputStream.flush();
 		outputStream.close();
 		
-		BatchUploadType batchUploadType = BatchUploadType.TESTCASE;
-		long batchId = batchUploadService.createBatchUpload(new BatchUpload(batchUploadType)).getId();
 		jobLauncher.run(importTestCaseJob, new JobParametersBuilder()
 				.addString("fullPathFileName", fileToImport.getAbsolutePath())
 				.addLong("moduleId", moduleId)
@@ -255,6 +257,7 @@ public class TestCaseController {
 				.addLong("time", System.currentTimeMillis())
 				.toJobParameters());
 		
+		fileToImport.delete();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 		
