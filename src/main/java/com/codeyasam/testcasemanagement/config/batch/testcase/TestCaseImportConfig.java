@@ -25,7 +25,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 
 import com.codeyasam.testcasemanagement.domain.TestCase;
-import com.codeyasam.testcasemanagement.service.TestCaseItemParameterSqlSource;
 
 @Configuration
 public class TestCaseImportConfig {
@@ -91,7 +90,6 @@ public class TestCaseImportConfig {
 	@Bean(name="testCaseWriter")
 	public JdbcBatchItemWriter<TestCase> writer() {
 		JdbcBatchItemWriter<TestCase> writer = new JdbcBatchItemWriter<>();
-		writer.setItemSqlParameterSourceProvider(new TestCaseItemParameterSqlSource<TestCase>());
 		writer.setItemPreparedStatementSetter((TestCase item, PreparedStatement ps) -> {
 			ps.setLong(1, item.getId());
 			ps.setString(2, item.getName());
@@ -102,9 +100,7 @@ public class TestCaseImportConfig {
 			ps.setBoolean(7, item.getTestCaseAttribute().getIsMandatory());
 			ps.setLong(8, item.getTestCaseAttribute().getBatchId());
 		});
-		
 		writer.setSql("INSERT INTO testcase (id, name, description, location, priority, is_smoke, is_mandatory, batch_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-		
 		writer.setDataSource(dataSource);
 		return writer;
 	}
