@@ -43,7 +43,7 @@ public class TestCaseControllerIntegrationTest {
 		ResponseEntity<HttpStatus> response = testCaseController.importTestCase(multipartFile, 1);
 	
 		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertEquals(3, testCaseController.retrieveAll(null).getTotal());
+		Assert.assertEquals(2, testCaseController.retrieveAll(null).getTotal());
 		Assert.assertEquals(0, testCaseService.countByModuleId(2));
 	}
 }
