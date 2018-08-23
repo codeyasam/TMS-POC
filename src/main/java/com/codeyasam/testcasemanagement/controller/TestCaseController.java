@@ -34,12 +34,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.codeyasam.testcasemanagement.domain.BatchUpload;
+import com.codeyasam.testcasemanagement.domain.BatchUpload.BatchUploadType;
 import com.codeyasam.testcasemanagement.domain.TestCase;
 import com.codeyasam.testcasemanagement.domain.specification.TestCaseSpecification;
 import com.codeyasam.testcasemanagement.dto.TestCaseDTO;
 import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
 import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
+import com.codeyasam.testcasemanagement.service.BatchUploadService;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
 
 @RestController
@@ -47,14 +50,17 @@ import com.codeyasam.testcasemanagement.service.TestCaseService;
 public class TestCaseController {
 	
 	private TestCaseService testCaseService;
+	private BatchUploadService batchUploadService;
 	private JobLauncher jobLauncher;
 	private Job importTestCaseJob;
 	
 	@Autowired
 	public TestCaseController(TestCaseService testCaseService,
+			BatchUploadService batchUploadService,
 			JobLauncher jobLauncher,
 			@Qualifier("importTestCaseJob") Job importTestCaseJob) {
 		this.testCaseService = testCaseService;
+		this.batchUploadService = batchUploadService;
 		this.jobLauncher = jobLauncher;
 		this.importTestCaseJob = importTestCaseJob;
 	}
@@ -240,10 +246,12 @@ public class TestCaseController {
 		outputStream.flush();
 		outputStream.close();
 		
+		BatchUploadType batchUploadType = BatchUploadType.TESTCASE;
+		long batchId = batchUploadService.createBatchUpload(new BatchUpload(batchUploadType)).getId();
 		jobLauncher.run(importTestCaseJob, new JobParametersBuilder()
 				.addString("fullPathFileName", fileToImport.getAbsolutePath())
 				.addLong("moduleId", moduleId)
-				.addLong("batchId", testCaseService.countDistinctBatchId() + 1)
+				.addLong("batchId", batchId)
 				.addLong("time", System.currentTimeMillis())
 				.toJobParameters());
 		

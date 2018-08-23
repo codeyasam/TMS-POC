@@ -77,7 +77,7 @@ public class TestCaseImportConfig {
 		reader.setLineMapper(new DefaultLineMapper<TestCase>() {{
 			setLineTokenizer(new DelimitedLineTokenizer() {{
 				setNames(new String[] {"id", "name", "testCaseAttribute.description", "testCaseAttribute.location", "testCaseAttribute.priority",
-						"testCaseAttribute.isSmoke", "testCaseAttribute.isMandatory", "testCaseAttribute.batchId"});			
+						"testCaseAttribute.isSmoke", "testCaseAttribute.isMandatory"});			
 			}});
 			setFieldSetMapper(new BeanWrapperFieldSetMapper<TestCase>() {{
 				setTargetType(TestCase.class);
@@ -98,9 +98,9 @@ public class TestCaseImportConfig {
 			ps.setInt(5, item.getTestCaseAttribute().getPriority());
 			ps.setBoolean(6, item.getTestCaseAttribute().getIsSmoke());
 			ps.setBoolean(7, item.getTestCaseAttribute().getIsMandatory());
-			ps.setLong(8, item.getTestCaseAttribute().getBatchId());
+			ps.setLong(8, item.getTestCaseAttribute().getBatchUpload().getId());
 		});
-		writer.setSql("INSERT INTO testcase (id, name, description, location, priority, is_smoke, is_mandatory, batch_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+		writer.setSql("INSERT INTO testcase (id, name, description, location, priority, is_smoke, is_mandatory, batch_upload_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		writer.setDataSource(dataSource);
 		return writer;
 	}

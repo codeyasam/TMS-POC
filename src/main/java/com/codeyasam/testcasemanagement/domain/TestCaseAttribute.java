@@ -1,23 +1,27 @@
 package com.codeyasam.testcasemanagement.domain;
 
 import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class TestCaseAttribute {
 	
-	private Long batchId;
+	@ManyToOne
+	private BatchUpload batchUpload;
 	private String description;
 	private String location;
 	private int priority;
 	private Boolean isSmoke;
 	private Boolean isMandatory;
 	
-	public Long getBatchId() {
-		return batchId;
+	public BatchUpload getBatchUpload() {
+		return batchUpload;
 	}
-	public void setBatchId(Long batchId) {
-		this.batchId = batchId;
+	
+	public void setBatchUpload(BatchUpload batchUpload) {
+		this.batchUpload = batchUpload;
 	}
+	
 	public String getDescription() {
 		return description;
 	}

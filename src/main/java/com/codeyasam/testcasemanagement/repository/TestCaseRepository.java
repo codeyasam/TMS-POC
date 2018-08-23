@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.codeyasam.testcasemanagement.domain.TestCase;
@@ -20,7 +19,6 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
 	Page<TestCase> findByModulesApplicationIdAndMachinesIdNotNull(Long id, Pageable pageable);
 	Page<TestCase> findByModulesIdAndMachinesIdNotNull(Long id, Pageable pageable);
 	Page<TestCase> findDistinctByMachinesIdIn(List<Long> idList, Pageable pageable);
-	Page<TestCase> findByTestCaseAttributeBatchIdNotNullOrderByTestCaseAttributeBatchId(Pageable pageable);
 	Page<TestCase> findByIdIn(List<Long> idList, Pageable pageable);
 	Page<TestCase> findAll(Specification<TestCase> specification, Pageable pageable);
 	
@@ -31,11 +29,5 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
 	Long countByModulesApplicationIdAndMachinesIdNotNull(long id);
 	Long countByModulesIdAndMachinesIdNotNull(long id);
 	Long countDistinctByMachinesIdIn(List<Long> idList);
-	Long countByTestCaseAttributeBatchIdNotNull();
 	Long countByIdIn(List<Long> idList);
-	
-//	@Query("SELECT count(t) FROM TestCase t GROUP BY t.testCaseAttribute.batchId")
-//	Long queryDistinctBatchIdCount();
-	@Query("SELECT count(t) FROM TestCase t")
-	Long queryDistinctBatchIdCount();
 }

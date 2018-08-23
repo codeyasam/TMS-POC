@@ -98,10 +98,6 @@ public class TestCaseService {
 		return testCaseRepository.countDistinctByMachinesIdIn(idList);
 	}
 	
-	public Long countDistinctBatchId() {
-		return testCaseRepository.queryDistinctBatchIdCount();
-	}
-	
 	public List<TestCase> retrieveTestCasesByMachinesIdNotNull(Pageable pageable) {
 		return testCaseRepository.findByMachinesIdNotNull(pageable).getContent();
 	}
