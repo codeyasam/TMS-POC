@@ -1,0 +1,3 @@
+id, name, description, location, priority, isSmoke, isMandatory
+12335, sampleName, sampleDesc, sampleLoc, 1, 1, 1
+45234, sampleName2, sampleDesc, sampleLoc, 1, 1, 1
