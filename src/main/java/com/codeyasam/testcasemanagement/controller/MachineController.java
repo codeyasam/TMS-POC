@@ -38,6 +38,7 @@ import com.codeyasam.testcasemanagement.dto.MachineDTO;
 import com.codeyasam.testcasemanagement.dto.TestCaseDTO;
 import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
 import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
+import com.codeyasam.testcasemanagement.service.IMachineTestCaseManager;
 import com.codeyasam.testcasemanagement.service.MachineService;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
 
@@ -146,11 +147,26 @@ public class MachineController {
 				.collect(Collectors.toList());		
 	}
 	
+	@RequestMapping(value="/{id}/addTestCasesToMachine")
+	public MultipleDataResponse<TestCaseDTO> addTestCasesToMachine(@PathVariable long id, @RequestBody List<TestCase> testCases) {
+		List<Long> idList = testCaseService.mapTestCasesToIdList(testCases);
+		List<TestCase> addedTestCasesToMachine = manageMachineTestCases(idList, id, 
+				(machine, testCaseList) -> machine.getTestCases().addAll(testCaseList));
+		List<TestCaseDTO> testCaseDTOList = mapTestCaseListToDTO(addedTestCasesToMachine);
+		return new MultipleDataResponse.Builder<TestCaseDTO>()
+				.setData(testCaseDTOList)
+				.setTotal(testCaseService.countByIdIn(idList))
+				.setPrompt("Successfully added test cases to machine.")
+				.setStatus(HttpStatus.OK.value())
+				.build();
+	}
+	
 	@RequestMapping(value="/{id}/removeTestCasesFromMachine")
 	public MultipleDataResponse<TestCaseDTO> removeTestCasesFromMachine(@PathVariable long id, @RequestBody List<TestCase> testCases) {
-		List<Long> idList = mapTestCasesToIdList(testCases);
-		List<TestCase> removedTestCasesFromMachine = removeTestCasesFromMachineId(idList, id);
-		List<TestCaseDTO> testCaseDTOList = mapRemovedTestCasesToDTO(removedTestCasesFromMachine);
+		List<Long> idList = testCaseService.mapTestCasesToIdList(testCases);
+		List<TestCase> removedTestCasesFromMachine = manageMachineTestCases(idList, id,
+				(machine, testCaseList) -> machine.getTestCases().removeAll(testCaseList));
+		List<TestCaseDTO> testCaseDTOList = mapTestCaseListToDTO(removedTestCasesFromMachine);
 		return new MultipleDataResponse.Builder<TestCaseDTO>()
 				.setData(testCaseDTOList)
 				.setTotal(testCaseService.countByIdIn(idList))
@@ -159,23 +175,17 @@ public class MachineController {
 				.build();
 	}
 	
-	private List<Long> mapTestCasesToIdList(List<TestCase> testCases) {
-		return testCases
-				.stream()
-				.map(testcase -> testcase.getId())
-				.collect(Collectors.toList());
-	}
-	
-	private List<TestCase> removeTestCasesFromMachineId(List<Long> idList, long machineId) {
+	private List<TestCase> manageMachineTestCases(List<Long> idList, long machineId, 
+			IMachineTestCaseManager testCaseManager) {
 		List<TestCase> testCaseList = testCaseService.retrieveTestCasesByIdIn(idList, null);
 		Machine machine = machineService.searchById(machineId);
-		machine.getTestCases().removeAll(testCaseList);
+		testCaseManager.modify(machine, testCaseList);
 		machineService.updateMachine(machine);
-		return testCaseList;
+		return testCaseList;	
 	}
 	
-	private List<TestCaseDTO> mapRemovedTestCasesToDTO(List<TestCase> removedTestCases) {
-		return removedTestCases
+	private List<TestCaseDTO> mapTestCaseListToDTO(List<TestCase> testCaseList) {
+		return testCaseList
 				.stream()
 				.map(testcase -> testCaseService.convertToDTO(testcase))
 				.collect(Collectors.toList());

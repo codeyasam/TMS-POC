@@ -1,0 +1,5 @@
+id, name, description, location, priority, isSmoke, isMandatory
+36261, testName3, sampleFilter, sampleLocFilter, 1, 0, 0
+67282, testName4, sampleFilter, sampleLocFilter, 1, 0, 0
+36260, testName1, sampleFilter, sampleLocFilter, 2, 0, 1
+67287, testName2, sampleFilter, sampleLocFilter, 3, 1, 0

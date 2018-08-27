@@ -23,6 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.codeyasam.testcasemanagement.domain.BatchUpload;
+import com.codeyasam.testcasemanagement.domain.specification.TestCaseSpecification.SearchType;
+import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
+import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
+import com.codeyasam.testcasemanagement.exception.TestCaseSearchException;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
 
 @RunWith(SpringRunner.class)
@@ -37,13 +42,52 @@ public class TestCaseControllerIntegrationTest {
 
 	@Test
 	public void importTestCaseList() throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-		String path = Paths.get(TARGET_FOLDER, TEST_UPLOADS_FOLDER, TEST_TESTCASE_CSV_FILENAME).toAbsolutePath().toString();
-		FileInputStream inputFile = new FileInputStream(path);
-		MockMultipartFile multipartFile = new MockMultipartFile("file", TEST_TESTCASE_CSV_FILENAME, "multipart/form-data", inputFile);
-		ResponseEntity<HttpStatus> response = testCaseController.importTestCase(multipartFile, 1);
+		long moduleId = 1;
+		String testCaseFileName = TEST_TESTCASE_CSV_FILENAME;
+		SingleDataResponse<BatchUpload> response = importTestCasesToModuleFromFlatFile(moduleId, testCaseFileName);
 	
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertEquals(2, testCaseController.retrieveAll(null).getTotal());
-		Assert.assertEquals(0, testCaseService.countByModuleId(2));
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
+		Assert.assertEquals(2, testCaseService.countByModuleId(1));
+	}
+	
+	@Test
+	public void importTestCasesToMachineByModule() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException, IOException {
+		long machineId = 1;
+		long moduleId = 2;
+		final String testCaseToMachineByModuleCsvFileName = "TestCasesToMachineByModule.csv";
+		importTestCasesToModuleFromFlatFile(moduleId, testCaseToMachineByModuleCsvFileName);
+		
+		ResponseEntity<HttpStatus> response = testCaseController.importTestCasesToMachineByModule(machineId, moduleId);
+		
+		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
+		Assert.assertEquals(2, testCaseService.countByMachineId(machineId));
+	}
+	
+	@Test
+	public void importTestCasesByFilter() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException, IOException, TestCaseSearchException {
+		long moduleId = 3;
+		String testCaseFileName = "TestCasesForModuleByFilter.csv";
+		importTestCasesToModuleFromFlatFile(moduleId, testCaseFileName);
+		TestCaseSearchDTO testCaseSearchDTO = new TestCaseSearchDTO();
+		testCaseSearchDTO.setText("");
+		testCaseSearchDTO.setType(SearchType.ALL.type());
+		testCaseSearchDTO.setModuleId(moduleId);
+		testCaseSearchDTO.setPriority(1);
+		testCaseSearchDTO.setIsPriority(true);
+		testCaseSearchDTO.setIsMandatory(0);
+		testCaseSearchDTO.setIsSmoke(0);
+		ResponseEntity<HttpStatus> response = testCaseController.importTestCasesToMachineByFilter(testCaseSearchDTO.getText(), 
+				testCaseSearchDTO.getType(), moduleId, testCaseSearchDTO.getPriority(), testCaseSearchDTO.getIsPriority(), 
+				testCaseSearchDTO.getIsMandatory(), testCaseSearchDTO.getIsSmoke());
+		
+		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+		Assert.assertEquals(2, testCaseService.countBySpecification(testCaseSearchDTO));
+	}
+	
+	private SingleDataResponse<BatchUpload> importTestCasesToModuleFromFlatFile(long moduleId, String testCaseFileName) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+		String path = Paths.get(TARGET_FOLDER, TEST_UPLOADS_FOLDER, testCaseFileName).toAbsolutePath().toString();
+		FileInputStream inputFile = new FileInputStream(path);
+		MockMultipartFile multipartFile = new MockMultipartFile("file", testCaseFileName, "multipart/form-data", inputFile);
+		return testCaseController.importTestCase(multipartFile, moduleId);		
 	}
 }

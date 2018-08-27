@@ -65,7 +65,11 @@ public class TestCaseImportConfig {
 	
 	@Bean(name="testCaseProcessor")
 	@StepScope
-	public TestCaseItemProcessor processor(@Value("#{jobParameters[batchId]}") long batchId) {
+	public TestCaseItemProcessor processor(TestCaseJobCompletionListener listener,
+			@Value("#{jobParameters[moduleId]}") long moduleId,
+			@Value("#{jobParameters[batchId]}") long batchId) {
+		listener.setModuleId(moduleId);
+		listener.setBatchId(batchId);
 		return new TestCaseItemProcessor(batchId);
 	}
 	

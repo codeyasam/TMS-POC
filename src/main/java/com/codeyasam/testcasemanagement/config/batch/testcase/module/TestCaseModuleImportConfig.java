@@ -67,7 +67,7 @@ public class TestCaseModuleImportConfig {
 	public JdbcCursorItemReader<TestCaseModuleDTO> reader(@Value("#{jobParameters[batchId]}") long batchId) {
 		JdbcCursorItemReader<TestCaseModuleDTO> databaseReader = new JdbcCursorItemReader<>();
 		databaseReader.setDataSource(dataSource);
-		databaseReader.setRowMapper(new BeanPropertyRowMapper<TestCaseModuleDTO>());
+		databaseReader.setRowMapper(new BeanPropertyRowMapper<>(TestCaseModuleDTO.class));
 		databaseReader.setSql("SELECT id as testCaseId FROM testcase WHERE batch_upload_id = ?");
 		databaseReader.setPreparedStatementSetter(preparedStatement -> {
 			preparedStatement.setLong(1, batchId);

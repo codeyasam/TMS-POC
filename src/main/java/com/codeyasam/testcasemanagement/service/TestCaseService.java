@@ -1,6 +1,7 @@
 package com.codeyasam.testcasemanagement.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -144,6 +145,13 @@ public class TestCaseService {
 		criteriaQuery.where(restrictions);
 		return entityManager.createQuery(criteriaQuery).getSingleResult();
 	}
+	
+	public List<Long> mapTestCasesToIdList(List<TestCase> testCases) {
+		return testCases
+				.stream()
+				.map(testcase -> testcase.getId())
+				.collect(Collectors.toList());
+	}	
 	
 	public TestCaseDTO convertToDTO(TestCase testCase) {
 		TestCaseDTO testCaseDTO = modelMapper.map(testCase, TestCaseDTO.class);

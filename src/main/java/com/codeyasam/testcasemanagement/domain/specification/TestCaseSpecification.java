@@ -15,13 +15,25 @@ import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 
 public class TestCaseSpecification {
 	
-	private static final String ALL = "all";
-	private static final String NAME = "name";
-	private static final String DESCRIPTION = "description";
-	private static final String LOCATION = "location";
-	private static final String PRIORITY_ONLY = "priorityOnly";
-	private static final String SMOKE_ONLY = "smokeOnly";
-	private static final String MANDATORY_ONLY = "mandatoryOnly";
+	public static enum SearchType {
+		ALL("all"),
+		NAME("name"),
+		DESCRIPTION("description"),
+		LOCATION("location"),
+		PRIORITY_ONLY("priorityOnly"),
+		SMOKE_ONLY("smokeOnly"),
+		MANDATORY_ONLY("mandatoryOnly");
+		
+		private String type;
+		
+		SearchType(String type) {
+			this.type = type;
+		}
+		
+		public String type() {
+			return type;
+		}
+	}
 	
 	public static Specification<TestCase> defineSpecification(TestCaseSearchDTO testCaseSearchDTO) {
 		String text = testCaseSearchDTO.getText().trim();
@@ -32,17 +44,17 @@ public class TestCaseSpecification {
 			final String searchText = testCaseSearchDTO.getText().toLowerCase().trim();
 			Predicate id          = builder.like(builder.concat("", root.get("id")), searchText);
 			Predicate name        = builder.like(builder.lower(root.get("name")), searchText);
-			Predicate description = builder.like(builder.lower(root.get("description")), searchText);
-			Predicate location    = builder.like(builder.lower(root.get("location")), searchText);
+			Predicate description = builder.like(builder.lower(root.get("testCaseAttribute").get("description")), searchText);
+			Predicate location    = builder.like(builder.lower(root.get("testCaseAttribute").get("location")), searchText);
 			
-			Predicate isSmoke     = builder.equal(root.get("isSmoke"), testCaseSearchDTO.getIsSmoke());
-			Predicate isMandatory = builder.equal(root.get("isMandatory"), testCaseSearchDTO.getIsMandatory());
+			Predicate isSmoke     = builder.equal(root.get("testCaseAttribute").get("isSmoke"), testCaseSearchDTO.getIsSmoke());
+			Predicate isMandatory = builder.equal(root.get("testCaseAttribute").get("isMandatory"), testCaseSearchDTO.getIsMandatory());
 			Predicate priority    = testCaseSearchDTO.getIsPriority() ? 
-					builder.equal(root.get("priority"), testCaseSearchDTO.getPriority()) :
-					builder.isNotNull(root.get("priority"));
+					builder.equal(root.get("testCaseAttribute").get("priority"), testCaseSearchDTO.getPriority()) :
+					builder.isNotNull(root.get("testCaseAttribute").get("priority"));
 			
 			Predicate exists = null;
-			if (testCaseSearchDTO.getModuleId() != null) {
+			if (testCaseSearchDTO.getModuleId() != null && testCaseSearchDTO.getModuleId() != 0) {
 				Root<TestCase> testCaseRoot = root;
 				Subquery<Module> moduleSubquery = query.subquery(Module.class);
 				Root<Module> moduleRoot = moduleSubquery.from(Module.class);
@@ -55,21 +67,21 @@ public class TestCaseSpecification {
 				exists = builder.isNotNull(moduleJoin.get("id"));
 			}
 			
-			if (testCaseSearchDTO.getType().equals(ALL)) {
+			if (testCaseSearchDTO.getType().equals(SearchType.ALL.type())) {
 				Predicate or  = builder.or(id, name, description, location);
 				Predicate all = builder.and(or, name, exists, priority, isSmoke, isMandatory);
 				return all;
-			} else if (testCaseSearchDTO.getType().equals(NAME)) {
+			} else if (testCaseSearchDTO.getType().equals(SearchType.NAME.type())) {
 				return builder.and(name, exists, priority, isSmoke, isMandatory);
-			} else if (testCaseSearchDTO.getType().equals(DESCRIPTION)) {
+			} else if (testCaseSearchDTO.getType().equals(SearchType.DESCRIPTION.type())) {
 				return builder.and(description, exists, priority, isSmoke, isMandatory);
-			} else if (testCaseSearchDTO.getType().equals(LOCATION)) {
+			} else if (testCaseSearchDTO.getType().equals(SearchType.LOCATION.type())) {
 				return builder.and(location, exists, priority, isSmoke, isMandatory);
-			} else if (testCaseSearchDTO.getType().equals(PRIORITY_ONLY)) {
+			} else if (testCaseSearchDTO.getType().equals(SearchType.PRIORITY_ONLY.type())) {
 				return builder.and(priority, exists);
-			} else if (testCaseSearchDTO.getType().equals(SMOKE_ONLY)) {
+			} else if (testCaseSearchDTO.getType().equals(SearchType.SMOKE_ONLY.type())) {
 				return builder.and(isSmoke, exists);
-			} else if (testCaseSearchDTO.getType().equals(MANDATORY_ONLY)) {
+			} else if (testCaseSearchDTO.getType().equals(SearchType.MANDATORY_ONLY.type())) {
 				return builder.and(isMandatory, exists);
 			}
 			

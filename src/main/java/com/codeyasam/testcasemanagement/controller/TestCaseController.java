@@ -42,6 +42,7 @@ import com.codeyasam.testcasemanagement.dto.TestCaseDTO;
 import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
 import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
+import com.codeyasam.testcasemanagement.exception.TestCaseSearchException;
 import com.codeyasam.testcasemanagement.service.BatchUploadService;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
 
@@ -53,16 +54,22 @@ public class TestCaseController {
 	private BatchUploadService batchUploadService;
 	private JobLauncher jobLauncher;
 	private Job importTestCaseJob;
+	private Job importTestCaseToMachineJobByModule;
+	private Job importTestCaseToMachineJobByFilter;
 	
 	@Autowired
 	public TestCaseController(TestCaseService testCaseService,
 			BatchUploadService batchUploadService,
 			JobLauncher jobLauncher,
-			@Qualifier("importTestCaseJob") Job importTestCaseJob) {
+			@Qualifier("importTestCaseJob") Job importTestCaseJob,
+			@Qualifier("importTestCaseToMachineJobByModule") Job importTestCaseToMachineJobByModule,
+			@Qualifier("importTestCaseToMachineJobByFilter") Job importTestCaseToMachineJobByFilter) {
 		this.testCaseService = testCaseService;
 		this.batchUploadService = batchUploadService;
 		this.jobLauncher = jobLauncher;
 		this.importTestCaseJob = importTestCaseJob;
+		this.importTestCaseToMachineJobByModule = importTestCaseToMachineJobByModule;
+		this.importTestCaseToMachineJobByFilter = importTestCaseToMachineJobByFilter;
 	}
 
 	@RequestMapping(value="/", method=RequestMethod.POST)
@@ -222,7 +229,8 @@ public class TestCaseController {
 		TestCaseSearchDTO testCaseSearchDTO = new TestCaseSearchDTO();
 		testCaseSearchDTO.setText(text);
 		testCaseSearchDTO.setModuleId(moduleId);
-		testCaseSearchDTO.setIsSmoke(isSmoke);
+		testCaseSearchDTO.setIsSmoke(isSmoke ? 1 : 0);
+		testCaseSearchDTO.setIsMandatory(isMandatory ? 1 : 0);
 		testCaseSearchDTO.setIsPriority(isPriority);
 		testCaseSearchDTO.setPriority(priority);
 		
@@ -238,7 +246,7 @@ public class TestCaseController {
 	}
 	
 	@RequestMapping(value="/importTestCases", method=RequestMethod.POST)
-	public ResponseEntity<HttpStatus> importTestCase(@RequestParam("file") MultipartFile multipartFile, @RequestParam("moduleId") long moduleId) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+	public SingleDataResponse<BatchUpload> importTestCase(@RequestParam("file") MultipartFile multipartFile, @RequestParam("moduleId") long moduleId) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 		BatchUploadType batchUploadType = BatchUploadType.TESTCASE;
 		long batchId = batchUploadService.createBatchUpload(new BatchUpload(batchUploadType)).getId();
 		
@@ -258,6 +266,46 @@ public class TestCaseController {
 				.toJobParameters());
 		
 		fileToImport.delete();
+		return new SingleDataResponse.Builder<BatchUpload>()
+				.setData(new BatchUpload(batchId, batchUploadType))
+				.setPrompt("Successfully uploaded test cases from flat file.")
+				.setStatus(HttpStatus.OK.value())
+				.build();
+	}
+	
+	@RequestMapping(value="/importTestCasesToMachineByModule", method=RequestMethod.POST)
+	public ResponseEntity<HttpStatus> importTestCasesToMachineByModule(@RequestParam("machineId") long machineId, 
+			@RequestParam("moduleId") long moduleId) throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+		
+		jobLauncher.run(importTestCaseToMachineJobByModule, new JobParametersBuilder()
+				.addLong("machineId", machineId)
+				.addLong("moduleId", moduleId)
+				.addLong("time", System.currentTimeMillis())
+				.toJobParameters());
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/importTestCasesToMachineByFilter", method=RequestMethod.POST)
+	public ResponseEntity<HttpStatus> importTestCasesToMachineByFilter(@RequestParam("text") String searchText,
+			@RequestParam("filterType") String searchType,
+			@RequestParam("moduleId") long moduleId,
+			@RequestParam("priority") long priority,
+			@RequestParam("isPriority") boolean isPriority,
+			@RequestParam("isMandatory") long isMandatory,
+			@RequestParam("isSmoke") long isSmoke) throws TestCaseSearchException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+		
+		jobLauncher.run(importTestCaseToMachineJobByFilter, new JobParametersBuilder()
+				.addString("text", searchText)
+				.addString("type", searchType)
+				.addLong("moduleId", moduleId)
+				.addLong("priority", priority)
+				.addLong("isPriority", isPriority ? 1L : 0L)
+				.addLong("isMandatory", isMandatory)
+				.addLong("isSmoke", isSmoke)
+				.addLong("time", System.currentTimeMillis())
+				.toJobParameters());
+		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 		

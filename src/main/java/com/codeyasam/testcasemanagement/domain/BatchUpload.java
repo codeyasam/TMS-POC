@@ -31,6 +31,10 @@ public class BatchUpload {
 		this.batchUploadType = batchUploadType;
 	}
 	
+	public BatchUpload(long id, BatchUploadType batchUploadType) {
+		this.batchUploadType = batchUploadType;
+	}
+	
 	public long getId() {
 		return id;
 	}

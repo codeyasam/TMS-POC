@@ -9,9 +9,9 @@ public class TestCaseSearchDTO {
 	private Long moduleId;
 	private String description;
 	private String location;
-	private int priority;
-	private Boolean isSmoke;
-	private Boolean isMandatory;
+	private long priority;
+	private long isSmoke;
+	private long isMandatory;
 	private Boolean isPriority;
 	
 	public String getText() {
@@ -38,22 +38,22 @@ public class TestCaseSearchDTO {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public int getPriority() {
+	public long getPriority() {
 		return priority;
 	}
-	public void setPriority(int priority) {
+	public void setPriority(long priority) {
 		this.priority = priority;
 	}
-	public Boolean getIsSmoke() {
+	public long getIsSmoke() {
 		return isSmoke;
 	}
-	public void setIsSmoke(Boolean isSmoke) {
+	public void setIsSmoke(long isSmoke) {
 		this.isSmoke = isSmoke;
 	}
-	public Boolean getIsMandatory() {
+	public long getIsMandatory() {
 		return isMandatory;
 	}
-	public void setIsMandatory(Boolean isMandatory) {
+	public void setIsMandatory(long isMandatory) {
 		this.isMandatory = isMandatory;
 	}
 	public Boolean getIsPriority() {
