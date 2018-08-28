@@ -49,7 +49,7 @@ public class TestCaseSpecification {
 			
 			Predicate isSmoke     = builder.equal(root.get("testCaseAttribute").get("isSmoke"), testCaseSearchDTO.getIsSmoke());
 			Predicate isMandatory = builder.equal(root.get("testCaseAttribute").get("isMandatory"), testCaseSearchDTO.getIsMandatory());
-			Predicate priority    = testCaseSearchDTO.getIsPriority() ? 
+			Predicate priority    = testCaseSearchDTO.getIsPriority() == 1 ? 
 					builder.equal(root.get("testCaseAttribute").get("priority"), testCaseSearchDTO.getPriority()) :
 					builder.isNotNull(root.get("testCaseAttribute").get("priority"));
 			

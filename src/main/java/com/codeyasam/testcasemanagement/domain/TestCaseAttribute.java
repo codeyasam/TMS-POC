@@ -10,7 +10,7 @@ public class TestCaseAttribute {
 	private BatchUpload batchUpload;
 	private String description;
 	private String location;
-	private int priority;
+	private Long priority;
 	private Boolean isSmoke;
 	private Boolean isMandatory;
 	
@@ -34,10 +34,10 @@ public class TestCaseAttribute {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public int getPriority() {
+	public Long getPriority() {
 		return priority;
 	}
-	public void setPriority(int priority) {
+	public void setPriority(long priority) {
 		this.priority = priority;
 	}
 	public Boolean getIsSmoke() {

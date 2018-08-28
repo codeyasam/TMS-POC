@@ -152,20 +152,8 @@ public class TestCaseController {
 		List<TestCaseDTO> testCaseDTOList = mapTestCaseListToDTO(testCaseList);
 		return new MultipleDataResponse.Builder<TestCaseDTO>()
 				.setData(testCaseDTOList)
-				.setTotal(testCaseService.countByMachineId(machineId))
+				.setTotal(testCaseService.countByMacineId(machineId))
 				.setPrompt("Successfully retrieved test cases by machine id.")
-				.setStatus(HttpStatus.OK.value())
-				.build();
-	}
-	
-	@RequestMapping(value="/searchByMachineIdNotNull", method=RequestMethod.GET)
-	public MultipleDataResponse<TestCaseDTO> searchByMahineIdNotNull(Pageable pageable) {
-		List<TestCase> testCaseList = testCaseService.retrieveTestCasesByMachinesIdNotNull(pageable);
-		List<TestCaseDTO> testCaseDTOList = mapTestCaseListToDTO(testCaseList);
-		return new MultipleDataResponse.Builder<TestCaseDTO>()
-				.setData(testCaseDTOList)
-				.setTotal(testCaseService.countByMachinesIdNotNull())
-				.setPrompt("Successfully retrieved test cases where machines id not null")
 				.setStatus(HttpStatus.OK.value())
 				.build();
 	}
@@ -179,29 +167,6 @@ public class TestCaseController {
 				.setTotal(testCaseService.countByModulesIdNotNull())
 				.setPrompt("Sucessfully retrieved test cases where modules id not null")
 				.setStatus(HttpStatus.OK.value())
-				.build();
-	}
-	
-	@RequestMapping(value="/searchByApplicationIdWhereModuleIdNotNull", method=RequestMethod.GET)
-	public MultipleDataResponse<TestCaseDTO> searchByApplicationIdWhereModuleIdNotNull(@RequestParam("input") long id, Pageable pageable) {
-		List<TestCase> testCaseList = testCaseService.retrieveTestCasesByApplicationIdWhereModulesIdNotNull(id, pageable);
-		List<TestCaseDTO> testCaseDTOList = mapTestCaseListToDTO(testCaseList);
-		return new MultipleDataResponse.Builder<TestCaseDTO>()
-				.setData(testCaseDTOList)
-				.setTotal(testCaseService.countByApplicationIdWhereModulesIdNotNull(id))
-				.setPrompt("Successfully retrieved test cases by application id where modules id not null")
-				.setStatus(HttpStatus.OK.value())
-				.build();
-	}
-	
-	@RequestMapping(value="/searchByModuleIdWhereMachinesIdNotNull", method=RequestMethod.GET)
-	public MultipleDataResponse<TestCaseDTO> searchByModuleIdWhereMachinesIdNotNull(long id, Pageable pageable) {
-		List<TestCase> testCaseList = testCaseService.retrieveTestCasesByModuleIdWhereMachinesIdNotNull(id, pageable);
-		List<TestCaseDTO> testCaseDTOList = mapTestCaseListToDTO(testCaseList);
-		return new MultipleDataResponse.Builder<TestCaseDTO>()
-				.setData(testCaseDTOList)
-				.setTotal(testCaseService.countByModuleIdWhereMachinesIdNotNull(id))
-				.setPrompt("Successfully retrieved test cases by module id where machines not null")
 				.build();
 	}
 	
@@ -231,7 +196,7 @@ public class TestCaseController {
 		testCaseSearchDTO.setModuleId(moduleId);
 		testCaseSearchDTO.setIsSmoke(isSmoke ? 1 : 0);
 		testCaseSearchDTO.setIsMandatory(isMandatory ? 1 : 0);
-		testCaseSearchDTO.setIsPriority(isPriority);
+		testCaseSearchDTO.setIsPriority(isPriority ? 1 : 0);
 		testCaseSearchDTO.setPriority(priority);
 		
 		Specification<TestCase> specification = TestCaseSpecification.defineSpecification(testCaseSearchDTO);
@@ -291,7 +256,7 @@ public class TestCaseController {
 			@RequestParam("filterType") String searchType,
 			@RequestParam("moduleId") long moduleId,
 			@RequestParam("priority") long priority,
-			@RequestParam("isPriority") boolean isPriority,
+			@RequestParam("isPriority") long isPriority,
 			@RequestParam("isMandatory") long isMandatory,
 			@RequestParam("isSmoke") long isSmoke) throws TestCaseSearchException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 		
@@ -300,7 +265,7 @@ public class TestCaseController {
 				.addString("type", searchType)
 				.addLong("moduleId", moduleId)
 				.addLong("priority", priority)
-				.addLong("isPriority", isPriority ? 1L : 0L)
+				.addLong("isPriority", isPriority)
 				.addLong("isMandatory", isMandatory)
 				.addLong("isSmoke", isSmoke)
 				.addLong("time", System.currentTimeMillis())

@@ -1,19 +1,15 @@
 package com.codeyasam.testcasemanagement.domain;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="machine")
-public class Machine {
+public class Machine extends Auditable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -21,9 +17,6 @@ public class Machine {
 	
 	@Column(nullable=false)
 	private String name;
-	
-	@ManyToMany(fetch=FetchType.LAZY)
-	private Set<TestCase> testCases;
 	
 	public long getId() {
 		return id;
@@ -37,10 +30,5 @@ public class Machine {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<TestCase> getTestCases() {
-		return testCases;
-	}
-	public void setTestCases(Set<TestCase> testCases) {
-		this.testCases = testCases;
-	}	
+
 }

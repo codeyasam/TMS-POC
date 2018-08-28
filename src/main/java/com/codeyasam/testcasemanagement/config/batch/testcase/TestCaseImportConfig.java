@@ -99,7 +99,7 @@ public class TestCaseImportConfig {
 			ps.setString(2, item.getName());
 			ps.setString(3, item.getTestCaseAttribute().getDescription());
 			ps.setString(4,  item.getTestCaseAttribute().getLocation());
-			ps.setInt(5, item.getTestCaseAttribute().getPriority());
+			ps.setLong(5, item.getTestCaseAttribute().getPriority());
 			ps.setBoolean(6, item.getTestCaseAttribute().getIsSmoke());
 			ps.setBoolean(7, item.getTestCaseAttribute().getIsMandatory());
 			ps.setLong(8, item.getTestCaseAttribute().getBatchUpload().getId());

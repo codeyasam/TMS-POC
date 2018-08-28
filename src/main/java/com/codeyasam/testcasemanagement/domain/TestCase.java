@@ -5,25 +5,29 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="testcase")
-public class TestCase {
+public class TestCase extends Auditable {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(nullable=false)
 	private String name;
 	
 	@ManyToMany(mappedBy="testCases")
-	private Set<Machine> machines; 
-	
-	@ManyToMany(mappedBy="testCases")
 	private Set<Module> modules;
+	
+	@OneToMany(mappedBy="testCase")
+	private Set<MachineTestCase> machineTestCases;
 	
 	@Embedded
 	private TestCaseAttribute testCaseAttribute;
@@ -40,12 +44,6 @@ public class TestCase {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<Machine> getMachines() {
-		return machines;
-	}
-	public void setMachines(Set<Machine> machines) {
-		this.machines = machines;
-	}
 	public Set<Module> getModules() {
 		return modules;
 	}
@@ -57,5 +55,12 @@ public class TestCase {
 	}
 	public void setTestCaseAttribute(TestCaseAttribute testCaseAttributes) {
 		this.testCaseAttribute = testCaseAttributes;
-	}	
+	}
+	public Set<MachineTestCase> getMachineTestCases() {
+		return machineTestCases;
+	}
+	public void setMachineTestCases(Set<MachineTestCase> machineTestCases) {
+		this.machineTestCases = machineTestCases;
+	}
+	
 }

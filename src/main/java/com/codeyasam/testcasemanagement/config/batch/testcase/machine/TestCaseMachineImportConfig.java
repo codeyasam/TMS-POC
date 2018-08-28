@@ -1,9 +1,10 @@
 package com.codeyasam.testcasemanagement.config.batch.testcase.machine;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.EnumUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -25,7 +26,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import com.codeyasam.testcasemanagement.domain.TestCase;
-import com.codeyasam.testcasemanagement.domain.specification.TestCaseSpecification.SearchType;
 import com.codeyasam.testcasemanagement.dto.TestCaseMachineDTO;
 import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 import com.codeyasam.testcasemanagement.exception.TestCaseSearchException;
@@ -114,7 +114,7 @@ public class TestCaseMachineImportConfig {
 		testCaseSearchDTO.setType(type);
 		testCaseSearchDTO.setModuleId(moduleId);
 		testCaseSearchDTO.setPriority(priority);
-		testCaseSearchDTO.setIsPriority(isPriority == 1 ? true : false);
+		testCaseSearchDTO.setIsPriority(isPriority);
 		testCaseSearchDTO.setIsSmoke(isSmoke);
 		testCaseSearchDTO.setIsMandatory(isMandatory);
 		
@@ -147,10 +147,11 @@ public class TestCaseMachineImportConfig {
 	public JdbcBatchItemWriter<TestCaseMachineDTO> writer() {
 		JdbcBatchItemWriter<TestCaseMachineDTO> writer = new JdbcBatchItemWriter<TestCaseMachineDTO>();
 		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<TestCaseMachineDTO>());
-		writer.setSql("INSERT INTO machine_test_cases (test_cases_id, machines_id) VALUES (?, ?)");
+		writer.setSql("INSERT INTO machine_test_cases (test_case_id, machine_id, created_date) VALUES (?, ?, ?)");
 		writer.setItemPreparedStatementSetter((item, ps) -> {
 			ps.setLong(1, item.getTestCaseId());
 			ps.setLong(2, item.getMachineId());
+			ps.setObject(3, LocalDateTime.now());
 		});
 		writer.setDataSource(dataSource);
 		return writer;

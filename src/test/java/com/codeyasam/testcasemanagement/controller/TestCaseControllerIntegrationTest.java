@@ -47,7 +47,7 @@ public class TestCaseControllerIntegrationTest {
 		SingleDataResponse<BatchUpload> response = importTestCasesToModuleFromFlatFile(moduleId, testCaseFileName);
 	
 		Assert.assertEquals(HttpStatus.OK.value(), response.getStatus());
-		Assert.assertEquals(2, testCaseService.countByModuleId(1));
+		Assert.assertEquals(2, testCaseService.countByModuleId(moduleId));
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class TestCaseControllerIntegrationTest {
 		ResponseEntity<HttpStatus> response = testCaseController.importTestCasesToMachineByModule(machineId, moduleId);
 		
 		Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
-		Assert.assertEquals(2, testCaseService.countByMachineId(machineId));
+		Assert.assertEquals(2, testCaseService.countByMacineId(machineId));
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class TestCaseControllerIntegrationTest {
 		testCaseSearchDTO.setType(SearchType.ALL.type());
 		testCaseSearchDTO.setModuleId(moduleId);
 		testCaseSearchDTO.setPriority(1);
-		testCaseSearchDTO.setIsPriority(true);
+		testCaseSearchDTO.setIsPriority(1);
 		testCaseSearchDTO.setIsMandatory(0);
 		testCaseSearchDTO.setIsSmoke(0);
 		ResponseEntity<HttpStatus> response = testCaseController.importTestCasesToMachineByFilter(testCaseSearchDTO.getText(), 

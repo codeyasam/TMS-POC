@@ -12,7 +12,7 @@ public class TestCaseSearchDTO {
 	private long priority;
 	private long isSmoke;
 	private long isMandatory;
-	private Boolean isPriority;
+	private long isPriority;
 	
 	public String getText() {
 		return text;
@@ -56,10 +56,10 @@ public class TestCaseSearchDTO {
 	public void setIsMandatory(long isMandatory) {
 		this.isMandatory = isMandatory;
 	}
-	public Boolean getIsPriority() {
+	public long getIsPriority() {
 		return isPriority;
 	}
-	public void setIsPriority(Boolean isPriority) {
+	public void setIsPriority(long isPriority) {
 		this.isPriority = isPriority;
 	}
 	public Long getModuleId() {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -83,28 +84,19 @@ public class TestCaseService {
 		return testCaseRepository.countByModulesId(id);
 	}
 	
-	public List<TestCase> retrieveTestCasesByMachineId(Long id, Pageable pageable) {
-		return testCaseRepository.findByMachinesId(id, pageable).getContent();
-	}
-	
-	public long countByMachineId(long id) {
-		return testCaseRepository.countByMachinesId(id);
-	}
-	
+	@SuppressWarnings("unchecked")
 	public List<TestCase> retrieveDistinctTestCaseByMachinesIdIn(List<Long> idList, Pageable pageable) {
-		return testCaseRepository.findDistinctByMachinesIdIn(idList, pageable).getContent();
+		Query query = entityManager.createQuery("select distinct testCase from TestCase testCase inner join testCase.machineTestCases machineTestCase where machineTestCase.machine.id IN (?1)")
+				.setParameter(1, idList)
+				.setFirstResult(pageable.getOffset())
+				.setMaxResults(pageable.getPageSize());
+		return query.getResultList();
 	}
 	
-	public Long countDistinctByMachinesIdIn(List<Long> idList) {
-		return testCaseRepository.countDistinctByMachinesIdIn(idList);
-	}
-	
-	public List<TestCase> retrieveTestCasesByMachinesIdNotNull(Pageable pageable) {
-		return testCaseRepository.findByMachinesIdNotNull(pageable).getContent();
-	}
-	
-	public Long countByMachinesIdNotNull() {
-		return testCaseRepository.countByMachinesIdNotNull();
+	public long countDistinctByMachinesIdIn(List<Long> idList) {
+		Query query = entityManager.createQuery("select count(distinct testCase.id) from TestCase testCase inner join testCase.machineTestCases machineTestCase where machineTestCase.machine.id IN (?1)")
+				.setParameter(1, idList);
+		return (long) query.getSingleResult();
 	}
 	
 	public List<TestCase> retrieveTestCasesByModulesIdNotNull(Pageable pageable) {
@@ -113,22 +105,6 @@ public class TestCaseService {
 	
 	public Long countByModulesIdNotNull() {
 		return testCaseRepository.countByModulesIdNotNull();
-	}
-	
-	public List<TestCase> retrieveTestCasesByApplicationIdWhereModulesIdNotNull(long id, Pageable pageable) {
-		return testCaseRepository.findByModulesApplicationIdAndMachinesIdNotNull(id, pageable).getContent();
-	}
-	
-	public long countByApplicationIdWhereModulesIdNotNull(long id) {
-		return testCaseRepository.countByModulesApplicationIdAndMachinesIdNotNull(id);
-	}
-	
-	public List<TestCase> retrieveTestCasesByModuleIdWhereMachinesIdNotNull(long id, Pageable pageable) {
-		return testCaseRepository.findByModulesIdAndMachinesIdNotNull(id, pageable).getContent();
-	}
-	
-	public long countByModuleIdWhereMachinesIdNotNull(long id) {
-		return testCaseRepository.countByModulesIdAndMachinesIdNotNull(id);
 	}
 	
 	public List<TestCase> retrieveTestCasesBySpecification(Specification<TestCase> specification, Pageable pageable) {
@@ -153,8 +129,24 @@ public class TestCaseService {
 				.collect(Collectors.toList());
 	}	
 	
+	@SuppressWarnings("unchecked")
+	public List<TestCase> retrieveTestCasesByMachineId(long id, Pageable pageable) {
+		Query query = entityManager.createQuery("select testCase from TestCase testCase inner join testCase.machineTestCases machineTestCase where machineTestCase.machine.id = ?1")
+				.setParameter(1, id)
+				.setFirstResult(pageable.getOffset())
+				.setMaxResults(pageable.getPageSize());
+		return query.getResultList();
+	}	
+	
+	public long countByMacineId(long id) {
+		Query query = entityManager.createQuery("select count(*) from TestCase testCase inner join testCase.machineTestCases machineTestCase where machineTestCase.machine.id = ?1")
+				.setParameter(1, id);
+		return (long) query.getSingleResult();
+	}
+	
 	public TestCaseDTO convertToDTO(TestCase testCase) {
 		TestCaseDTO testCaseDTO = modelMapper.map(testCase, TestCaseDTO.class);
 		return testCaseDTO;
 	}
+
 }
