@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -26,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import com.codeyasam.testcasemanagement.domain.TestCase;
+import com.codeyasam.testcasemanagement.domain.specification.TestCaseSpecification.SearchType;
 import com.codeyasam.testcasemanagement.dto.TestCaseMachineDTO;
 import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 import com.codeyasam.testcasemanagement.exception.TestCaseSearchException;
@@ -103,10 +105,10 @@ public class TestCaseMachineImportConfig {
 			@Value("#{jobParameters[isMandatory]}") long isMandatory,
 			@Value("#{jobParameters[isSmoke]}") long isSmoke) throws TestCaseSearchException {
 
-//		boolean hasValidSearchType = EnumUtils.isValidEnum(SearchType.class, type);
-//		if (!hasValidSearchType) {
-//			throw new TestCaseSearchException("Invalid search \"type\" in request parameters.");
-//		}
+		boolean hasValidSearchType = EnumUtils.isValidEnum(SearchType.class, type);
+		if (!hasValidSearchType) {
+			throw new TestCaseSearchException("Invalid search \"type\" in request parameters.");
+		}
 		
 		JpaPagingItemReader<TestCase> reader = new JpaPagingItemReader<>();
 		TestCaseSearchDTO testCaseSearchDTO = new TestCaseSearchDTO();
