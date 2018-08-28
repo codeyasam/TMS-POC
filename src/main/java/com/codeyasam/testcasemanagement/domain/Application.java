@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="application")
-public class Application {
+public class Application extends Auditable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

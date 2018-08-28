@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="batch_upload")
-public class BatchUpload {
+public class BatchUpload extends Auditable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
