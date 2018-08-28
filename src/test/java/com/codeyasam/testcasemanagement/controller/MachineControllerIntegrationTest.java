@@ -39,6 +39,6 @@ public class MachineControllerIntegrationTest {
 		ResponseEntity<HttpStatus> response = machineController.importMachineList(multipartFile);
 		
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(3L, machineController.retrieveAll(null).getTotal());
+		assertEquals(6, machineController.retrieveAll(null).getTotal());
 	}
 }

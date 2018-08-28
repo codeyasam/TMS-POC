@@ -39,7 +39,7 @@ public class ModuleControllerIntegrationTest {
 		ResponseEntity<HttpStatus> response = moduleController.importModuleList(multipartFile, 1);
 		
 		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertEquals(moduleController.retrieveAllModule(null).getTotal(), 4);
+		Assert.assertEquals(moduleController.retrieveAllModule(null).getTotal(), 6);
 	}
 	
 }
