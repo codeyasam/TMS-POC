@@ -1,12 +1,15 @@
 package com.codeyasam.testcasemanagement.controller;
 
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.APPLICATION_CSV_FILENAME;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEMPORARY_UPLOADS_FOLDER;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.batch.core.Job;
@@ -34,10 +37,6 @@ import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
 import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
 import com.codeyasam.testcasemanagement.service.ApplicationService;
 
-import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
-import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEMPORARY_UPLOADS_FOLDER;
-import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.APPLICATION_CSV_FILENAME;
-
 @RestController
 @RequestMapping(value="/applications")
 public class ApplicationController {
@@ -55,66 +54,64 @@ public class ApplicationController {
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
 	public SingleDataResponse<ApplicationDTO> createApplication(@RequestBody Application application) {
-		SingleDataResponse<ApplicationDTO> response = new SingleDataResponse<>();
 		application = applicationService.createApplication(application);
-		response.setData(applicationService.convertToDTO(application));
-		response.setPrompt("Successfully Created Application.");
-		response.setStatus(HttpStatus.CREATED.value());
-		return response;
+		return new SingleDataResponse.Builder<ApplicationDTO>()
+				.setData(applicationService.convertToDTO(application))
+				.setPrompt("Successfully Created Application.")
+				.setStatus(HttpStatus.CREATED.value())
+				.build();
 	}
 	
 	@RequestMapping(value="/", method=RequestMethod.PUT)
 	public SingleDataResponse<ApplicationDTO> updateApplication(@RequestBody Application application) {
-		SingleDataResponse<ApplicationDTO> response = new SingleDataResponse<>();
 		application = applicationService.updateApplication(application);
-		response.setData(applicationService.convertToDTO(application));
-		response.setPrompt("Successfully Updated Application");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
+		return new SingleDataResponse.Builder<ApplicationDTO>()
+				.setData(applicationService.convertToDTO(application))
+				.setPrompt("Successfully Updated Application")
+				.setStatus(HttpStatus.OK.value())
+				.build();
 	}
 	
 	@RequestMapping(value="/", method=RequestMethod.DELETE)
 	public SingleDataResponse<ApplicationDTO> deleteApplication(@RequestBody Application application) {
-		SingleDataResponse<ApplicationDTO> response = new SingleDataResponse<>();
 		application = applicationService.deleteApplication(application);
-		response.setData(applicationService.convertToDTO(application));
-		response.setPrompt("Successfully deleted an application");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
+		return new SingleDataResponse.Builder<ApplicationDTO>()
+				.setData(applicationService.convertToDTO(application))
+				.setPrompt("Successfully deleted an application")
+				.setStatus(HttpStatus.OK.value())
+				.build();
 	}
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public MultipleDataResponse<ApplicationDTO> retrieveAll(Pageable pageable) {
-		MultipleDataResponse<ApplicationDTO> response = new MultipleDataResponse<>();
-		List<ApplicationDTO> applicationDTOList = applicationService.retrieveAll(pageable)
-				.stream()
-				.map(application -> applicationService.convertToDTO(application))
-				.collect(Collectors.toList());
-		response.setData(applicationDTOList);
-		response.setTotal(applicationService.countAll());
-		response.setPrompt("Sucessfully retrieved applications");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
+		List<Application> applicationList = applicationService.retrieveAll(pageable);
+		List<ApplicationDTO> applicationDTOList = applicationService.convertToDTOList(applicationList);
+		return new MultipleDataResponse.Builder<ApplicationDTO>()
+				.setData(applicationDTOList)
+				.setTotal(applicationService.countAll())
+				.setPrompt("Successfully retrieved applications.")
+				.setStatus(HttpStatus.OK.value())
+				.build();
 	}
 	
 	@RequestMapping(value="/{id}/", method=RequestMethod.GET)
 	public SingleDataResponse<ApplicationDTO> searchById(@PathVariable long id) {
-		SingleDataResponse<ApplicationDTO> response = new SingleDataResponse<>();
 		Application application = applicationService.searchById(id);
-		response.setData(applicationService.convertToDTO(application));
-		response.setPrompt("Successfully retrieved application by Id");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
+		return new SingleDataResponse.Builder<ApplicationDTO>()
+				.setData(applicationService.convertToDTO(application))
+				.setPrompt("Successfully retrieved application by Id.")
+				.setStatus(HttpStatus.OK.value())
+				.build();
 	}
 	
 	@RequestMapping(value="/searchByName", method=RequestMethod.GET)
 	public SingleDataResponse<ApplicationDTO> searchByName(@RequestParam("input") String name) {
-		SingleDataResponse<ApplicationDTO> response = new SingleDataResponse<>();
 		Application application = applicationService.searchByName(name);
-		response.setData(applicationService.convertToDTO(application));
-		response.setPrompt("Successfully retrieve application by name");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
+		return new SingleDataResponse.Builder<ApplicationDTO>()
+				.setData(applicationService.convertToDTO(application))
+				.setPrompt("Successfully retrieved application by name.")
+				.setStatus(HttpStatus.OK.value())
+				.build();
 	}
 	
 	@RequestMapping(value="/import", method=RequestMethod.POST)

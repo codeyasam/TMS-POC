@@ -1,6 +1,7 @@
 package com.codeyasam.testcasemanagement.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,11 @@ public class ApplicationService {
 	public ApplicationDTO convertToDTO(Application application) {
 		ApplicationDTO applicationDTO = modelMapper.map(application, ApplicationDTO.class);
 		return applicationDTO;
+	}
+	
+	public List<ApplicationDTO> convertToDTOList(List<Application> applicationList) {
+		return applicationList.stream()
+				.map(application -> convertToDTO(application))
+				.collect(Collectors.toList());
 	}
 }
