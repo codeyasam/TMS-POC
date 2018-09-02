@@ -77,11 +77,11 @@ public class TestCaseService {
 	}
 	
 	public List<TestCase> retrieveTestCasesByModuleId(Long id, Pageable pageable) {
-		return testCaseRepository.findByModulesId(id, pageable).getContent();
+		return testCaseRepository.findByModuleTestCasesModuleId(id, pageable).getContent();
 	}
 	
 	public long countByModuleId(long id) {
-		return testCaseRepository.countByModulesId(id);
+		return testCaseRepository.countByModuleTestCasesModuleId(id);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -100,11 +100,11 @@ public class TestCaseService {
 	}
 	
 	public List<TestCase> retrieveTestCasesByModulesIdNotNull(Pageable pageable) {
-		return testCaseRepository.findByModulesIdNotNull(pageable).getContent();
+		return testCaseRepository.findByModuleTestCasesModuleIdNotNull(pageable).getContent();
 	}
 	
 	public Long countByModulesIdNotNull() {
-		return testCaseRepository.countByModulesIdNotNull();
+		return testCaseRepository.countByModuleTestCasesModuleIdNotNull();
 	}
 	
 	public List<TestCase> retrieveTestCasesBySpecification(Specification<TestCase> specification, Pageable pageable) {

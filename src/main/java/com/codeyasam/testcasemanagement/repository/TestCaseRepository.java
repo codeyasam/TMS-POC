@@ -12,12 +12,12 @@ import com.codeyasam.testcasemanagement.domain.TestCase;
 public interface TestCaseRepository extends PagingAndSortingRepository<TestCase, Long> {
 	
 	TestCase findByName(String name);
-	Page<TestCase> findByModulesId(Long id, Pageable pageable);
-	Page<TestCase> findByModulesIdNotNull(Pageable pageable);
+	Page<TestCase> findByModuleTestCasesModuleId(Long id, Pageable pageable);
+	Page<TestCase> findByModuleTestCasesModuleIdNotNull(Pageable pageable);
 	Page<TestCase> findByIdIn(List<Long> idList, Pageable pageable);
 	Page<TestCase> findAll(Specification<TestCase> specification, Pageable pageable);
 	
-	Long countByModulesId(long id);
-	Long countByModulesIdNotNull();
+	Long countByModuleTestCasesModuleId(long id);
+	Long countByModuleTestCasesModuleIdNotNull(); 
 	Long countByIdIn(List<Long> idList);
 }

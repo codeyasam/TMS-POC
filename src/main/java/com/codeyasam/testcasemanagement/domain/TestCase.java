@@ -5,10 +5,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,10 +23,10 @@ public class TestCase extends Auditable {
 	@Column(nullable=false)
 	private String name;
 	
-	@ManyToMany(mappedBy="testCases")
-	private Set<Module> modules;
+	@OneToMany(mappedBy="testCase", fetch=FetchType.LAZY)
+	private Set<ModuleTestCase> moduleTestCases;
 	
-	@OneToMany(mappedBy="testCase")
+	@OneToMany(mappedBy="testCase", fetch=FetchType.LAZY)
 	private Set<MachineTestCase> machineTestCases;
 	
 	@Embedded
@@ -44,11 +44,11 @@ public class TestCase extends Auditable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Set<Module> getModules() {
-		return modules;
+	public Set<ModuleTestCase> getModuleTestCases() {
+		return moduleTestCases;
 	}
-	public void setModules(Set<Module> modules) {
-		this.modules = modules;
+	public void setModuleTestCases(Set<ModuleTestCase> moduleTestCases) {
+		this.moduleTestCases = moduleTestCases;
 	}
 	public TestCaseAttribute getTestCaseAttribute() {
 		return testCaseAttribute;

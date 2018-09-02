@@ -1,15 +1,14 @@
 package com.codeyasam.testcasemanagement.domain.specification;
 
-import java.util.Set;
-
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import com.codeyasam.testcasemanagement.domain.Module;
+import com.codeyasam.testcasemanagement.domain.ModuleTestCase;
 import com.codeyasam.testcasemanagement.domain.TestCase;
 import com.codeyasam.testcasemanagement.dto.TestCaseSearchDTO;
 
@@ -56,12 +55,10 @@ public class TestCaseSpecification {
 			Predicate exists = null;
 			if (testCaseSearchDTO.getModuleId() != null && testCaseSearchDTO.getModuleId() != 0) {
 				Root<TestCase> testCaseRoot = root;
-				Subquery<Module> moduleSubquery = query.subquery(Module.class);
-				Root<Module> moduleRoot = moduleSubquery.from(Module.class);
-				moduleSubquery.select(moduleRoot);
-				moduleSubquery.where(builder.equal(moduleRoot.get("id"), testCaseSearchDTO.getModuleId()),
-						builder.isMember(testCaseRoot, moduleRoot.<Set<TestCase>>get("testCases")));
-				exists = builder.exists(moduleSubquery);
+				Join<TestCase, ModuleTestCase> joinedModuleTestCase = testCaseRoot.join("moduleTestCases");
+				Path<ModuleTestCase> moduleTestCaseId = joinedModuleTestCase.get("module").get("id");
+				Predicate isModuleIdEqual = builder.equal(moduleTestCaseId, testCaseSearchDTO.getModuleId());
+				exists = isModuleIdEqual;
 			} else {
 				Join<TestCase, Module> moduleJoin = root.join("modules");
 				exists = builder.isNotNull(moduleJoin.get("id"));

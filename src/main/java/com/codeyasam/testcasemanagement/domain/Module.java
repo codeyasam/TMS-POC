@@ -4,11 +4,12 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -25,8 +26,8 @@ public class Module {
 	@ManyToOne
 	private Application application;
 	
-	@ManyToMany
-	private Set<TestCase> testCases;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="testCase")
+	private Set<ModuleTestCase> moduleTestCases;
 	
 	public long getId() {
 		return id;
@@ -46,11 +47,11 @@ public class Module {
 	public void setApplication(Application application) {
 		this.application = application;
 	}
-	public Set<TestCase> getTestCases() {
-		return testCases;
+	public Set<ModuleTestCase> getModuleTestCases() {
+		return moduleTestCases;
 	}
-	public void setTestCases(Set<TestCase> testCases) {
-		this.testCases = testCases;
+	public void setModuleTestCases(Set<ModuleTestCase> moduleTestCases) {
+		this.moduleTestCases = moduleTestCases;
 	}
 	
 }

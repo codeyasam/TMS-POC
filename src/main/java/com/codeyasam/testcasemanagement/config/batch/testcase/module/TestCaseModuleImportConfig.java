@@ -89,7 +89,7 @@ public class TestCaseModuleImportConfig {
 			ps.setLong(1, item.getTestCaseId());
 			ps.setLong(2, item.getModuleId());
 		});
-		writer.setSql("INSERT INTO module_test_cases (test_cases_id, modules_id) VALUES (?, ?)");
+		writer.setSql("INSERT INTO module_test_cases (test_case_id, module_id) VALUES (?, ?)");
 		writer.setDataSource(dataSource);
 		return writer;
 	}

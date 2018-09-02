@@ -1,5 +1,9 @@
 package com.codeyasam.testcasemanagement.controller;
 
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.MODULE_CSV_FILENAME;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEMPORARY_UPLOADS_FOLDER;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,17 +34,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codeyasam.testcasemanagement.domain.Module;
-import com.codeyasam.testcasemanagement.domain.TestCase;
 import com.codeyasam.testcasemanagement.dto.ModuleDTO;
 import com.codeyasam.testcasemanagement.dto.TestCaseDTO;
 import com.codeyasam.testcasemanagement.dto.response.MultipleDataResponse;
 import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
 import com.codeyasam.testcasemanagement.service.ModuleService;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
-
-import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
-import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEMPORARY_UPLOADS_FOLDER;
-import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.MODULE_CSV_FILENAME;
 
 @RestController
 @RequestMapping("/modules")
@@ -152,32 +151,6 @@ public class ModuleController {
 		response.setPrompt("Successfully retrieved test cases by module id.");
 		response.setStatus(HttpStatus.OK.value());
 		return response;
-	}
-	
-	@RequestMapping(value="/{id}/removeTestCasesFromModule")
-	public MultipleDataResponse<TestCaseDTO> removeTestCasesFromModule(@PathVariable long id, @RequestBody List<TestCase> testCases) {
-		MultipleDataResponse<TestCaseDTO> response = new MultipleDataResponse<>();
-		List<Long> idList = testCases.stream()
-				.map(testcase -> testcase.getId())
-				.collect(Collectors.toList());
-		
-		List<TestCaseDTO> testCaseDTOList = removeTestCasesFromModule(idList, id)
-				.stream()
-				.map(testcase -> testCaseService.convertToDTO(testcase))
-				.collect(Collectors.toList());
-		response.setData(testCaseDTOList);
-		response.setTotal(testCaseService.countByIdIn(idList));
-		response.setPrompt("Successfully removed test cases from module.");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
-	}
-	
-	private List<TestCase> removeTestCasesFromModule(List<Long> idList, Long moduleId) {
-		List<TestCase> testCaseList = testCaseService.retrieveTestCasesByIdIn(idList, null);
-		Module module = moduleService.searchById(moduleId);
-		module.getTestCases().removeAll(testCaseList);
-		moduleService.updateModule(module);
-		return testCaseList;
 	}
 	
 	@RequestMapping(value="/import", method=RequestMethod.POST)

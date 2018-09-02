@@ -99,7 +99,7 @@ public class TestCaseMachineImportConfig {
 	@StepScope
 	public JpaPagingItemReader<TestCase> jpaReader(@Value("#{jobParameters[text]}") String text,
 			@Value("#{jobParameters[type]}") String type,
-			@Value("#{jobParameters[moduleId]}") long moduleId,
+			@Value("#{jobParameters[moduleId]}") Long moduleId,
 			@Value("#{jobParameters[priority]}") int priority,
 			@Value("#{jobParameters[isPriority]}") long isPriority,
 			@Value("#{jobParameters[isMandatory]}") long isMandatory,
@@ -131,7 +131,7 @@ public class TestCaseMachineImportConfig {
 	public JdbcCursorItemReader<TestCase> jdbcReader(@Value("#{jobParameters[moduleId]}") Long moduleId) {
 		JdbcCursorItemReader<TestCase> jdbcReader = new JdbcCursorItemReader<>();
 		jdbcReader.setDataSource(dataSource);
-		jdbcReader.setSql("SELECT test_cases_id as id FROM module_test_cases WHERE modules_id = ?");
+		jdbcReader.setSql("SELECT test_case_id as id FROM module_test_cases WHERE module_id = ?");
 		jdbcReader.setPreparedStatementSetter(preparedStatement -> {
 			preparedStatement.setLong(1,  moduleId);
 		});
