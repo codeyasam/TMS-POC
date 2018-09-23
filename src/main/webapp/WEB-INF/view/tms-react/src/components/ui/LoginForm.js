@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Header, Icon, Container, Divider } from 'semantic-ui-react'
 
-export const LoginForm = () => {
+const LoginForm = ({ onLogin=f=>f }) => {
   return (
     <Container text>
-    <div class="ui equal width center aligned padded grid">
-      <div class="column">
+    <div className="ui equal width center aligned padded grid">
+      <div className="column">
       <Header as='h2'>
         <Icon name='settings' />
         <Header.Content>
@@ -14,24 +15,24 @@ export const LoginForm = () => {
         </Header.Content>
       </Header>
       <Divider />
-        <form action="" method="get" class="ui large form">
-          <div class="ui stacked secondary  segment">
-            <div class="field">
-              <div class="ui left icon input">
-                <i class="user icon"></i>
+        <form action="" method="get" className="ui large form">
+          <div className="ui stacked secondary  segment">
+            <div className="field">
+              <div className="ui left icon input">
+                <i className="user icon"></i>
                 <input type="text" name="email" placeholder="E-mail address" />
               </div>
             </div>
-            <div class="field">
-              <div class="ui left icon input">
-                <i class="lock icon"></i>
+            <div className="field">
+              <div className="ui left icon input">
+                <i className="lock icon"></i>
                 <input type="password" name="password" placeholder="Password" />
               </div>
             </div>
-            <div class="ui fluid large teal submit button">Login</div>
+            <div className="ui fluid large teal submit button">Login</div>
           </div>
 
-          <div class="ui error message"></div>
+          <div className="ui error message"></div>
 
         </form>
       </div>
@@ -39,3 +40,9 @@ export const LoginForm = () => {
     </Container>
   )
 }
+
+LoginForm.propTypes = {
+    onLogin: PropTypes.func
+}
+
+export default LoginForm
