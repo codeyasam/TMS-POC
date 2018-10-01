@@ -9,7 +9,9 @@ const methods = {
     }
 }
 
-const LoginForm = ({username, isLoginFormVisible, onLogin=f=>f, onAuthenticationValidation=f=>f, router }) => {
+const LoginForm = ({username, isLoginFormVisible, errorMessage, 
+                    onLogin=f=>f, onAuthenticationValidation=f=>f, 
+                    onClearError=f=>f, router }) => {
     
     let _username, _password    
 
@@ -61,12 +63,19 @@ const LoginForm = ({username, isLoginFormVisible, onLogin=f=>f, onAuthentication
                 </div>
                 <button className="ui fluid large teal submit button">Login</button>
               </div>
-        
-              <div className="ui error message"></div>
-
             </form>
+            
+            { errorMessage &&
+                <div className="ui warning message">
+                    <i className="close icon" onClick={onClearError}></i>
+                    <div className="header">
+                        {errorMessage}
+                    </div>
+                        try again.
+                </div>
+            }
           </Grid.Column>
-        </Grid>
+        </Grid>        
         }
         { !isLoginFormVisible &&
             <div class="ui segment" style={{ height: '100%' }} verticalAlign='middle'>

@@ -12,13 +12,15 @@ export const login = credentials => dispatch => {
         .then(loginResponse => {
         console.log(loginResponse.url)
         if (loginResponse.url.indexOf("login?error") !== -1) {
-            console.log("login error");
+            let errorMessage = "Incorrect username or password!"
+            dispatch(setAuthenticationErrorMessage(errorMessage))
         } else {
             dispatch({
                 type: C.LOGIN,
                 payload: credentials.username
             })
             dispatch(hideLoginForm())
+            dispatch(clearAuthenticationErrorMessage())
             window.location.href = loginResponse.url
         }
     }) 
@@ -94,7 +96,23 @@ export const clearAuthentication = (route, router, dispatch) => {
     if (route.pathname !== "/login") {
         router.push("/login")
     } else {
+        dispatch(logout())
+        dispatch(clearAuthenticationErrorMessage())
         dispatch(revokeAuthentication())
-        dispatch(showLoginForm())        
+        dispatch(showLoginForm()) 
+    }
+}
+
+export const setAuthenticationErrorMessage = msg => {
+    return {
+        type: C.AUTHENTICATION_ERROR_MESSAGE,
+        payload: msg
+    }
+}
+
+export const clearAuthenticationErrorMessage = () => {
+    return {
+        type: C.AUTHENTICATION_ERROR_MESSAGE,
+        payload: ""
     }
 }

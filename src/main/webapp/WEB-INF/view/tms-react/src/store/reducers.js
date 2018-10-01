@@ -22,10 +22,16 @@ export const isAuthenticated = (state=false, action) =>
       action.payload :
       state
 
+export const errorMessage = (state="", action) => 
+    (action.type === C.AUTHENTICATION_ERROR_MESSAGE) ?
+      action.payload :
+      state
+
 export default combineReducers({
     auth: combineReducers({
         username,
         loginFormVisibility,
-        isAuthenticated
+        isAuthenticated,
+        errorMessage
     })
 })

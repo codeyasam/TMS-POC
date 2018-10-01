@@ -1,6 +1,8 @@
 {
     "auth": {
         "username": "",
-        "loginFormVisibility": false        
+        "loginFormVisibility": false,
+        "isAuthenticated": false,
+        "errorMessage": ""
     }
 }
