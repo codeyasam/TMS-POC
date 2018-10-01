@@ -1,48 +1,88 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Header, Icon, Container, Divider } from 'semantic-ui-react'
+import { Grid, Header, Icon } from 'semantic-ui-react'
+import lifecycle from 'react-pure-lifecycle'
 
-const LoginForm = ({ onLogin=f=>f }) => {
-  return (
-    <Container text>
-    <div className="ui equal width center aligned padded grid">
-      <div className="column">
-      <Header as='h2'>
-        <Icon name='settings' />
-        <Header.Content>
-          Test Case Management
-          <Header.Subheader>Login to manage your test cases</Header.Subheader>
-        </Header.Content>
-      </Header>
-      <Divider />
-        <form action="" method="get" className="ui large form">
-          <div className="ui stacked secondary  segment">
-            <div className="field">
-              <div className="ui left icon input">
-                <i className="user icon"></i>
-                <input type="text" name="email" placeholder="E-mail address" />
-              </div>
-            </div>
-            <div className="field">
-              <div className="ui left icon input">
-                <i className="lock icon"></i>
-                <input type="password" name="password" placeholder="Password" />
-              </div>
-            </div>
-            <div className="ui fluid large teal submit button">Login</div>
-          </div>
-
-          <div className="ui error message"></div>
-
-        </form>
-      </div>
-    </div>    
-    </Container>
-  )
+const methods = {
+    componentDidMount(props) { 
+        props.onAuthenticationValidation(props)
+    }
 }
+
+const LoginForm = ({username, isLoginFormVisible, onLogin=f=>f, onAuthenticationValidation=f=>f, router }) => {
+    
+    let _username, _password    
+
+    const submit = e => {
+      e.preventDefault()
+      onLogin({
+          username: _username.value,
+          password: _password.value
+      })
+    }    
+    
+    return (
+      <div className='login-form'>
+        {/*
+          Heads up! The styles below are necessary for the correct render of this example.
+          You can do same with CSS, the main idea is that all the elements up to the `Grid`
+          below must have a height of 100%.
+        */}
+        <style>{`
+          body > div,
+          body > div > div,
+          body > div > div > div.login-form {
+            height: 100%;
+          }
+        `}</style>
+        { isLoginFormVisible && 
+        <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Header as='h2'>
+                <Icon name='settings' />
+                <Header.Content>
+                  Test Case Management
+                  <Header.Subheader>Login to manage your test cases</Header.Subheader>
+                </Header.Content>
+            </Header>
+            <form onSubmit={submit} className="ui large form">
+              <div className="ui stacked secondary  segment">
+                <div className="field">
+                  <div className="ui left icon input">
+                    <i className="user icon"></i>
+                    <input type="text" name="email" placeholder="E-mail address" ref={input => _username = input} />
+                  </div>
+                </div>
+                <div className="field">
+                  <div className="ui left icon input">
+                    <i className="lock icon"></i>
+                    <input type="password" name="password" placeholder="Password" ref={input => _password = input} />
+                  </div>
+                </div>
+                <button className="ui fluid large teal submit button">Login</button>
+              </div>
+        
+              <div className="ui error message"></div>
+
+            </form>
+          </Grid.Column>
+        </Grid>
+        }
+        { !isLoginFormVisible &&
+            <div class="ui segment" style={{ height: '100%' }} verticalAlign='middle'>
+                <div class="ui active dimmer">
+                    <div class="ui text loader">Loading</div>
+                    </div>
+                <p></p>
+            </div>
+        }
+      </div>
+)}
 
 LoginForm.propTypes = {
-    onLogin: PropTypes.func
+    login: PropTypes.string,
+    onLogin: PropTypes.func,
+    router: PropTypes.object
 }
 
-export default LoginForm
+export default lifecycle(methods)(LoginForm)

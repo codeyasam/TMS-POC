@@ -1,5 +1,6 @@
 {
-    "login": {
-        "username": ""
+    "auth": {
+        "username": "",
+        "loginFormVisibility": false        
     }
 }

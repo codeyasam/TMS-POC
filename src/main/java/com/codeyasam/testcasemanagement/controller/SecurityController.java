@@ -16,13 +16,18 @@ public class SecurityController {
 	
 	@RequestMapping(value="/currentUser", method=RequestMethod.GET)
 	public SingleDataResponse<EndUserDTO> retrieveCurrentUser(Principal principal) {
-		EndUserDTO endUserDTO = new EndUserDTO();
-		endUserDTO.setUsername(principal.getName());
-		return new SingleDataResponse.Builder<EndUserDTO>()
-				.setData(endUserDTO)
-				.setPrompt("Successfully retrieved current logged in user.")
-				.setStatus(HttpStatus.OK.value())
-				.build();
+		SingleDataResponse.Builder<EndUserDTO> builder = new SingleDataResponse.Builder<>();
+		if (principal != null) {
+			EndUserDTO endUserDTO = new EndUserDTO();
+			endUserDTO.setUsername(principal.getName());
+			builder.setData(endUserDTO)
+				.setPrompt("Successfully retrieve logged in user.")
+				.setStatus(HttpStatus.OK.value());
+		} else {
+			builder.setPrompt("User not found: User is not logged in.")
+				.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		return builder.build();
 	}
 	
 }
