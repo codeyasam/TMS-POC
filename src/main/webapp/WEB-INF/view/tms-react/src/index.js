@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import sampleData from './intialState'
 import storeFactory from './store'
 import { Provider } from 'react-redux'
-import App from './components/ui/App'
+import App from './components/container/App'
 import LoginForm from './components/container/LoginForm'
 import { unregister } from './registerServiceWorker';
 unregister();

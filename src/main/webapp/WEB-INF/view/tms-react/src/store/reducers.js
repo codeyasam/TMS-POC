@@ -1,7 +1,7 @@
 import C from '../constants.js'
 import { combineReducers } from 'redux'
 
-export const username = (state=null, action) => {
+export const username = (state="", action) => {
     switch(action.type) {
         case C.LOGIN:
             return action.payload
@@ -27,11 +27,17 @@ export const errorMessage = (state="", action) =>
       action.payload :
       state
 
+export const logingIn = (state=false, action) => 
+    (action.type === C.LOGING_IN) ?
+      action.payload :
+      state
+
 export default combineReducers({
     auth: combineReducers({
         username,
         loginFormVisibility,
         isAuthenticated,
-        errorMessage
+        errorMessage,
+        logingIn
     })
 })

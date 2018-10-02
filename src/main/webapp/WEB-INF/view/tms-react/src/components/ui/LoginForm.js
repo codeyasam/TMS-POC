@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Header, Icon } from 'semantic-ui-react'
+import { Grid, Header, Icon, Loader, Dimmer } from 'semantic-ui-react'
 import lifecycle from 'react-pure-lifecycle'
 
 const methods = {
@@ -9,7 +9,7 @@ const methods = {
     }
 }
 
-const LoginForm = ({username, isLoginFormVisible, errorMessage, 
+const LoginForm = ({username, isLoginFormVisible, errorMessage, isLogingIn,
                     onLogin=f=>f, onAuthenticationValidation=f=>f, 
                     onClearError=f=>f, router }) => {
     
@@ -30,6 +30,10 @@ const LoginForm = ({username, isLoginFormVisible, errorMessage,
           You can do same with CSS, the main idea is that all the elements up to the `Grid`
           below must have a height of 100%.
         */}
+          { isLogingIn &&       
+              <Dimmer active>
+                <Loader size='mini'>Loging In</Loader>
+              </Dimmer> }            
         <style>{`
           body > div,
           body > div > div,
@@ -75,21 +79,22 @@ const LoginForm = ({username, isLoginFormVisible, errorMessage,
                 </div>
             }
           </Grid.Column>
-        </Grid>        
+        </Grid>    
         }
         { !isLoginFormVisible &&
-            <div class="ui segment" style={{ height: '100%' }} verticalAlign='middle'>
-                <div class="ui active dimmer">
-                    <div class="ui text loader">Loading</div>
+            <div className="ui segment" style={{ height: '100%' }} verticalalign='middle'>
+                <div className="ui active dimmer">
+                    <div className="ui text loader">Loading</div>
                     </div>
                 <p></p>
             </div>
         }
+        
       </div>
 )}
 
 LoginForm.propTypes = {
-    login: PropTypes.string,
+    username: PropTypes.string,
     onLogin: PropTypes.func,
     router: PropTypes.object
 }
