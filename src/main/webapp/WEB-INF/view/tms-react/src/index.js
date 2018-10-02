@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import sampleData from './intialState'
 import storeFactory from './store'
 import { Provider } from 'react-redux'
+import App from './components/ui/App'
 import LoginForm from './components/container/LoginForm'
 import { unregister } from './registerServiceWorker';
 unregister();
@@ -29,6 +29,7 @@ ReactDOM.render(
   <Provider store={store}>
       <Router>
         <Switch>
+          <Route exact={true} path="/" component={App} /> 
           <Route exact={true} path="/login" component={ LoginForm } />
         </Switch>
       </Router>

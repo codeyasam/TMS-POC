@@ -11,6 +11,7 @@ export const login = credentials => dispatch => {
     }).then(response => response)
         .then(loginResponse => {
         console.log(loginResponse.url)
+        dispatch(logingIn(false))
         if (loginResponse.url.indexOf("login?error") !== -1) {
             let errorMessage = "Incorrect username or password!"
             dispatch(setAuthenticationErrorMessage(errorMessage))
@@ -62,7 +63,7 @@ export const revokeAuthentication = () => {
 }
 
 export const validateAuthentication = (route, router) => dispatch => {
-    fetch('http://localhost:9080/principal/currentUser', {
+    fetch('/principal/currentUser', {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -114,5 +115,12 @@ export const clearAuthenticationErrorMessage = () => {
     return {
         type: C.AUTHENTICATION_ERROR_MESSAGE,
         payload: ""
+    }
+}
+
+export const logingIn = isLogingIn => {
+    return {
+        type: C.LOGING_IN,
+        payload: isLogingIn
     }
 }
