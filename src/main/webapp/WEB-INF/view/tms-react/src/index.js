@@ -30,6 +30,10 @@ ReactDOM.render(
       <Router>
         <Switch>
           <Route exact={true} path="/" component={App} /> 
+          <Route exact={true} path="/uploads" component={App} />
+          <Route exact={true} path="/applications" component={App} />
+          <Route exact={true} path="/modules" component={App} />
+
           <Route exact={true} path="/login" component={ LoginForm } />
         </Switch>
       </Router>
