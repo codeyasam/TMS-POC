@@ -1,7 +1,7 @@
 import C from './constants'
 import fetch from 'isomorphic-fetch'
 
-export const login = credentials => dispatch => {  
+export const performLogin = credentials => dispatch => {  
     fetch(`/perform_login?username=${encodeURIComponent(credentials.username)}&password=${encodeURIComponent(credentials.password)}`, {
         method: 'POST',
         headers: {
@@ -16,15 +16,35 @@ export const login = credentials => dispatch => {
             let errorMessage = "Incorrect username or password!"
             dispatch(setAuthenticationErrorMessage(errorMessage))
         } else {
-            dispatch({
-                type: C.LOGIN,
-                payload: credentials.username
-            })
+            dispatch(login(credentials.username))
             dispatch(hideLoginForm())
             dispatch(clearAuthenticationErrorMessage())
             window.location.href = loginResponse.url
         }
     }) 
+}
+
+export const login = username => {
+    return {
+        type: C.LOGIN,
+        payload: username
+    }
+}
+
+export const performLogout = () => dispatch => {
+    fetch('/logout', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response)
+        .then(logoutResponse => {
+        dispatch(logout())
+        dispatch(showLoginForm())
+        dispatch(revokeAuthentication())
+        window.location.href = logoutResponse.url
+    })
 }
 
 export const logout = () => {
@@ -86,7 +106,7 @@ export const authenticateUser = (route, router, username, dispatch) => {
     if (route.pathname !== "/") {
         router.push("/")
     } else {
-        dispatch({ type: C.LOGIN, payload: username })
+        dispatch(login(username))
         dispatch(invokeAuthentication())
         dispatch(hideLoginForm())
     }

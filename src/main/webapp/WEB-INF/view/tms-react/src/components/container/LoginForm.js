@@ -1,5 +1,5 @@
 import LoginForm from '../ui/LoginForm'
-import { login, logingIn, validateAuthentication, clearAuthenticationErrorMessage } from '../../actions'
+import { performLogin, logingIn, validateAuthentication, clearAuthenticationErrorMessage } from '../../actions'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -14,7 +14,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = dispatch => ({
     onLogin({username, password}) {
         dispatch(logingIn(true))
-        dispatch(login({username, password}))
+        dispatch(performLogin({username, password}))
     },
     onAuthenticationValidation(props) {
         console.log("before dispatch")

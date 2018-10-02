@@ -23,6 +23,7 @@ class App extends Component {
                       </Menu.Item>
                       <Menu.Item
                         name='logout'
+                        onClick={this.props.onLogout}
                       />
                     </Menu.Menu>                      
                 </Menu>
