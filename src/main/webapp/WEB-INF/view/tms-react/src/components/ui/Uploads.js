@@ -18,9 +18,11 @@ const Uploads = () => {
                   <Button basic color='red'>
                     Upload
                   </Button>
-                  <Button basic color='blue'>
-                    Download Template
-                  </Button>
+                  <a href="/applications/template/download">
+                    <Button basic color='blue'>
+                      Download Template
+                    </Button>
+                  </a>
                 </div>
               </Card.Content>
             </Card>          
@@ -38,9 +40,11 @@ const Uploads = () => {
                   <Button basic color='red'>
                     Upload
                   </Button>
-                  <Button basic color='blue'>
-                    Download Template
-                  </Button>
+                  <a href="/modules/template/download">
+                    <Button basic color='blue'>
+                      Download Template
+                    </Button>
+                  </a>
                 </div>
               </Card.Content>
             </Card>
@@ -58,9 +62,11 @@ const Uploads = () => {
                   <Button basic color='red'>
                     Upload
                   </Button>
-                  <Button basic color='blue'>
-                    Download Template
-                  </Button>
+                  <a href="/machines/template/download">
+                    <Button basic color='blue'>
+                      Download Template
+                    </Button>
+                  </a>
                 </div>
               </Card.Content>
             </Card>
@@ -78,9 +84,11 @@ const Uploads = () => {
                   <Button basic color='red'>
                     Upload
                   </Button>
-                  <Button basic color='blue'>
-                    Download Template
-                  </Button>
+                  <a href="/testcases/template/download">
+                    <Button basic color='blue'>
+                      Download Template
+                    </Button>
+                  </a>
                 </div>
               </Card.Content>
             </Card>        
