@@ -75,6 +75,7 @@ public class ModuleImportConfig {
 				setTargetType(ModuleApplicationDTO.class);
 			}});
 		}});
+		reader.setLinesToSkip(1);
 		return reader;
 	}
 	

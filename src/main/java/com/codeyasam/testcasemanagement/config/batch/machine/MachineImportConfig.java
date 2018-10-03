@@ -72,6 +72,7 @@ public class MachineImportConfig {
 				setTargetType(MachineDTO.class);
 			}});
 		}});
+		reader.setLinesToSkip(1);
 		return reader;
 	}
 	

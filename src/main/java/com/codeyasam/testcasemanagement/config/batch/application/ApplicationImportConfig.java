@@ -70,6 +70,7 @@ public class ApplicationImportConfig {
 				setTargetType(Application.class);
 			}});
 		}});
+		reader.setLinesToSkip(1);
 		return reader;
 	}
 	
