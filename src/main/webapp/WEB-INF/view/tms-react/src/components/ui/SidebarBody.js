@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Segment } from 'semantic-ui-react'
 import Uploads from './Uploads'
+import ModuleImportForm from './ModuleImportForm'
 
 class SidebarBody extends Component {
     
@@ -10,6 +11,10 @@ class SidebarBody extends Component {
             <Segment basic style={{ minHeight: 300 }} >
             { pathname === "/uploads" &&
                 <Uploads />
+            }
+            {
+              pathname === "/uploads/importModule" &&
+                <ModuleImportForm />
             }
             </Segment>            
         )

@@ -4,7 +4,7 @@ import AppSidebar from './AppSidebar'
 
 class App extends Component {
 
-    state = { visible: false }
+    state = { visible: true }
     handleButtonClick = () => this.setState({ visible: !this.state.visible })
     handleSidebarHide = () => this.setState({ visible: false })        
     

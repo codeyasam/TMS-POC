@@ -33,7 +33,8 @@ ReactDOM.render(
           <Route exact={true} path="/uploads" component={App} />
           <Route exact={true} path="/applications" component={App} />
           <Route exact={true} path="/modules" component={App} />
-
+          <Route exact={true} path="/uploads/importModule" component={App} />
+    
           <Route exact={true} path="/login" component={ LoginForm } />
         </Switch>
       </Router>

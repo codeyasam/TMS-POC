@@ -42,3 +42,4 @@ target/*
 #Allow
 !target/test_uploads/
 !target/tmp_uploads/
+!target/downloadable_templates/
