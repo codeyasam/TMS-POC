@@ -1,7 +1,19 @@
 import React from 'react'
+import fetch from 'isomorphic-fetch'
 import { Button, Card } from 'semantic-ui-react'
 
 const Uploads = () => {
+    
+    const onChangeUpload = (e) => {
+      console.log(e.target.files[0])
+      let file = e.target.files[0]
+      let formData = new FormData()
+      formData.append("file", file)
+      fetch('/applications/import', {
+        method: 'POST',
+        body: formData
+      })
+    }
     
     return (
         <Card.Group>
@@ -14,11 +26,9 @@ const Uploads = () => {
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>
-                  <input type="file" id="applicationImport" style={{ visibility: 'hidden' }} />
-                  <label for="applicationImport">
-                      <div className="ui teal button">
-                        Upload
-                      </div>
+                  <input type="file" id="applicationImport" style={{ display: 'none' }} onChange={onChangeUpload}/>
+                  <label htmlFor="applicationImport" className="ui teal button">
+                    Upload
                   </label>
 
                   <a href="/applications/template/download">
@@ -58,11 +68,9 @@ const Uploads = () => {
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>
-                <input type="file" id="machinesImport" style={{ visibility: 'hidden' }} />
-                <label for="machinesImport">
-                    <div class="ui teal button">
-                      Upload
-                    </div>
+                <input type="file" id="machinesImport" style={{ display: 'none' }} />
+                <label htmlFor="machinesImport" className="ui teal button">
+                  Upload
                 </label>
                 <a href="/machines/template/download">
                   <Button basic color='blue'>
