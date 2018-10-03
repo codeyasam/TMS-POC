@@ -3,11 +3,14 @@ package com.codeyasam.testcasemanagement.controller;
 import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.MACHINE_CSV_FILENAME;
 import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TARGET_FOLDER;
 import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.TEMPORARY_UPLOADS_FOLDER;
+import static com.codeyasam.testcasemanagement.config.TestCaseConfigConstant.DOWNLOADABLE_TEMPLATES_FOLDER;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import com.codeyasam.testcasemanagement.domain.Machine;
 import com.codeyasam.testcasemanagement.dto.MachineDTO;
@@ -161,4 +168,20 @@ public class MachineController {
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/template/download", method=RequestMethod.GET)
+	public ResponseEntity<Resource> download() throws IOException {
+		Path path = Paths.get(TARGET_FOLDER, DOWNLOADABLE_TEMPLATES_FOLDER, MACHINE_CSV_FILENAME).toAbsolutePath();
+		File file = new File(path.toString());
+		ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=machinesTemplate.csv");
+		
+		return ResponseEntity.ok()
+				.headers(headers)
+				.contentLength(file.length())
+				.contentType(MediaType.parseMediaType("application/octet-stream"))
+				.body(resource);
+	}
+	
 }
