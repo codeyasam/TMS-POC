@@ -14,16 +14,18 @@ const Uploads = () => {
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>
-                <div className='ui two buttons'>
-                  <Button basic color='red'>
-                    Upload
-                  </Button>
+                  <input type="file" id="applicationImport" style={{ visibility: 'hidden' }} />
+                  <label for="applicationImport">
+                      <div className="ui teal button">
+                        Upload
+                      </div>
+                  </label>
+
                   <a href="/applications/template/download">
                     <Button basic color='blue'>
                       Download Template
                     </Button>
                   </a>
-                </div>
               </Card.Content>
             </Card>          
         
@@ -36,16 +38,14 @@ const Uploads = () => {
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>
-                <div className='ui two buttons'>
-                  <Button basic color='red'>
-                    Upload
+                <Button className="ui teal button">
+                  Upload
+                </Button>
+                <a href="/modules/template/download">
+                  <Button basic color='blue'>
+                    Download Template
                   </Button>
-                  <a href="/modules/template/download">
-                    <Button basic color='blue'>
-                      Download Template
-                    </Button>
-                  </a>
-                </div>
+                </a>
               </Card.Content>
             </Card>
         
@@ -58,16 +58,17 @@ const Uploads = () => {
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>
-                <div className='ui two buttons'>
-                  <Button basic color='red'>
-                    Upload
+                <input type="file" id="machinesImport" style={{ visibility: 'hidden' }} />
+                <label for="machinesImport">
+                    <div class="ui teal button">
+                      Upload
+                    </div>
+                </label>
+                <a href="/machines/template/download">
+                  <Button basic color='blue'>
+                    Download Template
                   </Button>
-                  <a href="/machines/template/download">
-                    <Button basic color='blue'>
-                      Download Template
-                    </Button>
-                  </a>
-                </div>
+                </a>
               </Card.Content>
             </Card>
         
@@ -80,16 +81,14 @@ const Uploads = () => {
                 </Card.Description>
               </Card.Content>
               <Card.Content extra>
-                <div className='ui two buttons'>
-                  <Button basic color='red'>
-                    Upload
+                <Button className="ui teal button">
+                  Upload
+                </Button>
+                <a href="/testcases/template/download">
+                  <Button basic color='blue'>
+                    Download Template
                   </Button>
-                  <a href="/testcases/template/download">
-                    <Button basic color='blue'>
-                      Download Template
-                    </Button>
-                  </a>
-                </div>
+                </a>
               </Card.Content>
             </Card>        
         </Card.Group>
