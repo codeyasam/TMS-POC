@@ -20,7 +20,7 @@ class AppSidebar extends Component {
                     width='thin'
                   >
                     <Menu.Item>
-                        <Link to="/uploads">
+                        <Link to="/uploads" onClick={this.props.onSidebarHide}>
                             Uploads
                         </Link>
                     </Menu.Item>
