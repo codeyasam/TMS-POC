@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch'
-import { Button, Divider } from 'semantic-ui-react'
+import { Button, Divider, Dimmer, Loader, Message } from 'semantic-ui-react'
 import ApplicationOptions from './ApplicationOptions'
+import ControlledModal from './ControlledModal'
 
 class ModuleImportForm extends Component {
     
     constructor(props) {
         super(props)
+        this.state = { 
+            applicationOptions: [],
+            isUploading: false,
+            isSuccessfullyUploaded: false,
+            hasErrorOnSubmit: false
+        }
         this.submit = this.submit.bind(this)
-    }
-    
-    state = {
-        applicationOptions: []
     }
     
     fetchApplications = () => {
@@ -39,25 +42,61 @@ class ModuleImportForm extends Component {
     }
     
     componentDidMount() {
-        // this.fetchApplications()
+        this.fetchApplications()
     }
     
     submit(e) {
         e.preventDefault()
+        this.setState({ isUploading: true })
         let uploadedFile = this.refs.uploadedfile.files[0] 
-        let selectedApplication = this.refs.selectedApplication.value
-        console.log(selectedApplication)
-        console.log(uploadedFile)
+        let applicationId = this.refs.selectedApplication.value
+        let formData = new FormData()
+        formData.append("applicationId", applicationId)
+        formData.append("file", uploadedFile)
+        
+        if (!uploadedFile) {
+            console.log("no uploaded file.")
+            this.setState({ hasErrorOnSubmit: true })
+        }
+        
+        fetch('/modules/import', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.status === 200) {
+                this.setState({ isSuccessfullyUploaded: true })
+                console.log("Successfully uploaded modules")
+            }
+            this.setState({ isUploading: false })
+        })
     }
     
     render() {
-        //const { applicationOptions } = this.state
-        let applicationOptions = [{key: 1, value: 1, text: "App1"}, {key: 2, value: 2, text: "App2"}]
-        console.log(applicationOptions)
+        const { applicationOptions } = this.state
+        console.log(this.state.applicationOptions)
         return (
+            <div>
+            { this.state.isUploading &&
+                <Dimmer active>
+                  <Loader> Uploading... </Loader>
+                </Dimmer>
+            }            
+            
+            { this.state.hasErrorOnSubmit &&
+                <Message
+                  error
+                  header='Upload Error'
+                  content='You have to choose a file.'
+                />            
+            }
+            
+            <ControlledModal isVisible={this.state.isSuccessfullyUploaded}
+                header="Module List Upload"
+                message="Sucessfully uploaded list of modules." />            
+            Note: Modules belong to an Application.
             <form className="ui form" onSubmit={this.submit}>
                 <div className="fields">
-                    <div class="ten wide field">
+                    <div className="ten wide field">
                         <select placeholder="Select Application" 
                             className="ui fluid dropdown" 
                             ref="selectedApplication">
@@ -72,7 +111,7 @@ class ModuleImportForm extends Component {
                             style={{ display: 'none' }}
                             ref="uploadedfile"/>
                     </div>
-                    <div class="four wide field">    
+                    <div className="six wide field">    
                         <label htmlFor="moduleImport" 
                             className="ui button floated right">
                             Choose File
@@ -82,6 +121,7 @@ class ModuleImportForm extends Component {
                 <Divider />
                 <Button className="teal" position="ui right floated">Upload</Button>
             </form>
+            </div>
         )
     }
 }

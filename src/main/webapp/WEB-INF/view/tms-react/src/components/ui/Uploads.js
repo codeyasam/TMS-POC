@@ -28,7 +28,9 @@ class Uploads extends Component {
         method: 'POST',
         body: formData
       }).then(response => {
+          console.log(response)
           if (response.status === 200) {
+              console.log("Successfully Uploaded.")
               this.setState({ isSuccessfullyUploaded: true, modalHeader: modalHeader, modalMessage: modalMessage })
           }
           this.setState({ isUploading: false })
@@ -38,10 +40,6 @@ class Uploads extends Component {
     onClickUpload = (e) => {
         console.log("on clicked upload")
         e.target.files = null
-    }
-    
-    closeControlledModal = () => {
-        this.setState({ isSuccessfullyUploaded: false })
     }
     
     onImportModuleClose = () => {
@@ -54,6 +52,7 @@ class Uploads extends Component {
     }
     
     render() {
+        console.log(this.state.isSuccessfullyUploaded)
         return (
             <div>
             { this.state.isUploading &&
@@ -61,12 +60,10 @@ class Uploads extends Component {
                   <Loader> Uploading... </Loader>
                 </Dimmer>
             }
-            { this.state.isSuccessfullyUploaded &&
-                <ControlledModal 
-                    header={this.state.modalHeader}
-                    message={this.state.modalMessage}
-                    onHandleClose={this.closeControlledModal}/>
-            }  
+
+            <ControlledModal isVisible={this.state.isSuccessfullyUploaded}
+                header={this.state.modalHeader}
+                message={this.state.modalMessage} />  
             
             <Modal open={this.state.importModuleVisibility} 
               size='tiny'
