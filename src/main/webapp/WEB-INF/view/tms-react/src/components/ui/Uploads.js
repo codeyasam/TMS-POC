@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch'
-import { Button, Card, Dimmer, Loader } from 'semantic-ui-react'
+import { Button, Card, Dimmer, Loader, Modal } from 'semantic-ui-react'
 import ControlledModal from './ControlledModal'
-import { Link } from 'react-router-dom'
+import ModuleImportForm from './ModuleImportForm'
 
 class Uploads extends Component {
     
@@ -11,7 +11,7 @@ class Uploads extends Component {
         isSuccessfullyUploaded: false,
         modalHeader: "",
         modalMessage: "",
-        importModuleVisibility: true
+        importModuleVisibility: false
     }
     
     onChangeUpload = (e) => {
@@ -44,6 +44,15 @@ class Uploads extends Component {
         this.setState({ isSuccessfullyUploaded: false })
     }
     
+    onImportModuleClose = () => {
+        console.log("on import module close")
+        this.setState({ importModuleVisibility: false })
+    }
+    
+    onModuleUpload = () => {
+      this.setState({ importModuleVisibility: true })
+    }
+    
     render() {
         return (
             <div>
@@ -58,6 +67,17 @@ class Uploads extends Component {
                     message={this.state.modalMessage}
                     onHandleClose={this.closeControlledModal}/>
             }  
+            
+            <Modal open={this.state.importModuleVisibility} 
+              size='tiny'
+              onClose={this.onImportModuleClose}
+              closeIcon>
+              <Modal.Header>Modules Upload</Modal.Header>
+              <Modal.Content>
+                <ModuleImportForm />
+              </Modal.Content>
+            </Modal>
+            
             <Card.Group>
                 <Card>
                   <Card.Content>
@@ -96,11 +116,9 @@ class Uploads extends Component {
                     </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
-                    <Link to="uploads/importModule">
-                    <Button className="ui teal button">
+                    <Button className="ui teal button" onClick={this.onModuleUpload}>
                       Upload
                     </Button>
-                                    </Link>
                     <a href="/modules/template/download">
                       <Button basic color='blue'>
                         Download Template
