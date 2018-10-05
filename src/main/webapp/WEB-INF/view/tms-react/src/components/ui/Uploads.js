@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch'
 import { Button, Card, Dimmer, Loader, Modal } from 'semantic-ui-react'
 import ControlledModal from './ControlledModal'
 import ModuleImportForm from './ModuleImportForm'
+import TestCaseImportForm from './TestCaseImportForm'
 
 class Uploads extends Component {
     
@@ -11,7 +12,8 @@ class Uploads extends Component {
         isSuccessfullyUploaded: false,
         modalHeader: "",
         modalMessage: "",
-        importModuleVisibility: false
+        importModuleVisibility: false, 
+        importTestCaseVisibility: false
     }
     
     onChangeUpload = (e) => {
@@ -51,6 +53,14 @@ class Uploads extends Component {
       this.setState({ importModuleVisibility: true })
     }
     
+    onImportTestCaseClose = () => {
+      this.setState({ importTestCaseVisibility: false })
+    }
+    
+    onTestCaseUpload = () => {
+      this.setState({ importTestCaseVisibility: true })
+    }
+    
     render() {
         console.log(this.state.isSuccessfullyUploaded)
         return (
@@ -72,6 +82,16 @@ class Uploads extends Component {
               <Modal.Header>Modules Upload</Modal.Header>
               <Modal.Content>
                 <ModuleImportForm />
+              </Modal.Content>
+            </Modal>
+            
+            <Modal open={this.state.importTestCaseVisibility}
+              size='tiny'
+              onClose={this.onImportTestCaseClose}
+              closeIcon>
+              <Modal.Header>Test Cases Upload</Modal.Header>
+              <Modal.Content>
+                <TestCaseImportForm />
               </Modal.Content>
             </Modal>
             
@@ -160,7 +180,7 @@ class Uploads extends Component {
                     </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
-                    <Button className="ui teal button">
+                    <Button className="ui teal button" onClick={this.onTestCaseUpload}>
                       Upload
                     </Button>
                     <a href="/testcases/template/download">

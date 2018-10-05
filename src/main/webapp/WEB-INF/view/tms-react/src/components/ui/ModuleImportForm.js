@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch'
 import { Button, Divider, Dimmer, Loader, Message } from 'semantic-ui-react'
-import ApplicationOptions from './ApplicationOptions'
+import ApplicationOptions from './SelectOptions'
 import ControlledModal from './ControlledModal'
 
 class ModuleImportForm extends Component {
@@ -42,6 +42,7 @@ class ModuleImportForm extends Component {
     }
     
     componentDidMount() {
+        console.log("module import form mounted")
         this.fetchApplications()
     }
     
@@ -92,13 +93,13 @@ class ModuleImportForm extends Component {
             
             <ControlledModal isVisible={this.state.isSuccessfullyUploaded}
                 header="Module List Upload"
-                message="Sucessfully uploaded list of modules." />            
+                message="Sucessfully uploaded list of modules." />  
+                
             Note: Modules belong to an Application.
             <form className="ui form" onSubmit={this.submit}>
                 <div className="fields">
                     <div className="ten wide field">
-                        <select placeholder="Select Application" 
-                            className="ui fluid dropdown" 
+                        <select className="ui fluid dropdown" 
                             ref="selectedApplication">
                             { applicationOptions.map((options, i) => {
                                 return (<ApplicationOptions key={i}

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ApplicationOptions = ({value, text}) => 
+const SelectOptions = ({value, text}) => 
     <option value={value}>
         {text}
     </option>
     
-export default ApplicationOptions
+export default SelectOptions
