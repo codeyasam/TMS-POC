@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Segment } from 'semantic-ui-react'
-import Uploads from './Uploads'
-import ModuleImportForm from './ModuleImportForm'
+import Uploads from '../uploads/Uploads'
+import Applications from '../applications/Applications'
 
 class SidebarBody extends Component {
     
@@ -12,9 +12,8 @@ class SidebarBody extends Component {
             { pathname === "/uploads" &&
                 <Uploads />
             }
-            {
-              pathname === "/uploads/importModule" &&
-                <ModuleImportForm />
+            { pathname === "/applications" && 
+                <Applications />
             }
             </Segment>            
         )

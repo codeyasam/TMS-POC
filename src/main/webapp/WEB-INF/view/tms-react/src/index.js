@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import 'semantic-ui-css/semantic.min.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import sampleData from './intialState'
 import storeFactory from './store'
 import { Provider } from 'react-redux'
-import App from './components/container/App'
-import LoginForm from './components/container/LoginForm'
+import AppRouter from './routes'
 import { unregister } from './registerServiceWorker';
 unregister();
 
@@ -27,16 +24,6 @@ window.store = store
 
 ReactDOM.render(
   <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route exact={true} path="/" component={App} /> 
-          <Route exact={true} path="/uploads" component={App} />
-          <Route exact={true} path="/applications" component={App} />
-          <Route exact={true} path="/modules" component={App} />
-          <Route exact={true} path="/uploads/importModule" component={App} />
-    
-          <Route exact={true} path="/login" component={ LoginForm } />
-        </Switch>
-      </Router>
+    <AppRouter />
   </Provider>,
   document.getElementById('root'));

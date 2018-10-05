@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch'
 import { Button, Card, Dimmer, Loader, Modal } from 'semantic-ui-react'
-import ControlledModal from './ControlledModal'
+import ControlledModal from '../generic/ControlledModal'
 import ModuleImportForm from './ModuleImportForm'
 import TestCaseImportForm from './TestCaseImportForm'
 

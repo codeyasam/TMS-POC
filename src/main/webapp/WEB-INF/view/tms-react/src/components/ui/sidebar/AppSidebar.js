@@ -26,7 +26,7 @@ class AppSidebar extends Component {
                     </Menu.Item>
             
                     <Menu.Item>
-                        <Link to="/applications">
+                        <Link to="/applications" onClick={this.props.onSidebarHide}>
                             Applications
                         </Link>
                     </Menu.Item>        

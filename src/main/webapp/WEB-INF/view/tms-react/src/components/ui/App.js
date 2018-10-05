@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AppMenu from '../container/AppMenu'
-import AppSidebar from './AppSidebar'
+import AppSidebar from './sidebar/AppSidebar'
 
 class App extends Component {
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import fetch from 'isomorphic-fetch'
 import { Button, Divider, Dimmer, Loader, Message } from 'semantic-ui-react'
-import TestCaseOptions from './SelectOptions'
-import ControlledModal from './ControlledModal'
+import TestCaseOptions from '../generic/SelectOptions'
+import ControlledModal from '../generic/ControlledModal'
 
 class TestCaseImportForm extends Component {
     
