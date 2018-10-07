@@ -4,5 +4,15 @@
         "loginFormVisibility": false,
         "isAuthenticated": false,
         "errorMessage": ""
+    },
+    "application": {
+        "applicationList": [],
+        "selectedApplicationEntries": [],
+        "addApplication": {
+            "addApplicationFormVisibility": false,
+            "addingNewApplication": false,
+            "successfullyAddedApplication": false,
+            "hasErrorOnAddingApplication": false            
+        }
     }
 }

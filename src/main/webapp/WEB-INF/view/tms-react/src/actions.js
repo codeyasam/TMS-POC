@@ -144,3 +144,82 @@ export const logingIn = isLogingIn => {
         payload: isLogingIn
     }
 }
+
+export const fetchApplications = () => dispatch => {
+    fetch('/applications/?page=1&size=10', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }        
+    }).then(response => response.json())
+        .then(jsonResponse => {
+            console.log(jsonResponse)
+            if (jsonResponse.status === 200) {
+                dispatch(retrieveApplications(jsonResponse.data))
+            }
+    })
+}
+
+export const retrieveApplications = applications => {
+    return {
+        type: C.RETRIEVE_APPLICATIONS,
+        payload: applications
+    }
+}
+
+export const addApplicationRequest = (applicationName) => dispatch => {
+    if (!applicationName) {
+        dispatch(showErrorOnAddingApplication())
+        return
+    } 
+    
+    let application = {}
+    application.name = applicationName
+    fetch('/applications/', {
+        method: 'POST',
+        body: application
+    }).then(response => response.json()) 
+        .then(jsonResponse => {
+            console.log(jsonResponse)
+            if (jsonResponse.status === 200) {
+                dispatch(addApplication(jsonResponse.data))
+            }
+    })
+}
+
+export const addApplication = application => {
+    return {
+        type: C.ADD_APPLICATION,
+        payload: application
+    }
+}
+
+export const showAddApplicationForm = () => {
+    return {
+        type: C.ADD_APPLICATION_FORM_VISIBILITY,
+        payload: true
+    }
+}
+
+export const hideAddApplicationForm = () => {
+    console.log("hide application form")
+    return {
+        type: C.ADD_APPLICATION_FORM_VISIBILITY,
+        payload: false
+    }
+}
+
+export const showErrorOnAddingApplication = () => {
+    return {
+        type: C.HAS_ERROR_ON_ADDING_APPLICATION,
+        payload: true
+    }
+}
+
+export const hideErrorOnAddingApplication = () => {
+    return {
+        type: C.HAS_ERROR_ON_ADDING_APPLICATION,
+        payload: false
+    }
+}

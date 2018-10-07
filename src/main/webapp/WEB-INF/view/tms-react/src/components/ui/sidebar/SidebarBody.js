@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Segment } from 'semantic-ui-react'
 import Uploads from '../uploads/Uploads'
-import Applications from '../applications/Applications'
+import Applications from '../../container/applications/Applications'
 
 class SidebarBody extends Component {
     
