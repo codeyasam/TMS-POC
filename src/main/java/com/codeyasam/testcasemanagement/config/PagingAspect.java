@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PagingAspect {
 	
-	@Pointcut("within(com.citco.qa.system.restcontroller.*) && (args(pageable,..) || args(..,pageable))")
+	@Pointcut("within(com.codeyasam.testcasemanagement.controller.*) && (args(pageable,..) || args(..,pageable))")
 	public void restControllerGetMethods(Pageable pageable) {}
 	
 	@Around("restControllerGetMethods(pageable)")
