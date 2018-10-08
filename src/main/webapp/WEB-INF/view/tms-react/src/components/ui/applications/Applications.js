@@ -3,8 +3,10 @@ import lifecycle from 'react-pure-lifecycle'
 import CustomTable from '../../container/generic/CustomTable'
 import CustomTableFooter from '../../container/applications/CustomTableFooter'
 import CustomRow from '../../container/applications/CustomRow'
-import { Modal } from 'semantic-ui-react'
 import AddApplicationForm from '../../container/applications/AddApplicationForm'
+import AddModalForm from '../../container/applications/AddModalForm'
+import EditApplicationForm from '../../container/applications/EditApplicationForm'
+import EditModalForm from '../../container/applications/EditModalForm'
 
 const methods = {
     componentDidMount(props) {
@@ -13,7 +15,7 @@ const methods = {
     }
 }
 
-const Applications = ({ applications, selectedEntries, isAddApplicationFormVisible, onCloseAddApplicationForm, onAddApplicationButtonClick }) => {
+const Applications = () => {
     
     const tableHeaders = ["ID", "Application Name"]
     const tableColumns = ["id", "name"]
@@ -25,8 +27,7 @@ const Applications = ({ applications, selectedEntries, isAddApplicationFormVisib
     
     const tableFooter = () => {
         return (
-            <CustomTableFooter addButtonText='Add Application'
-                onAddButtonClick={onAddApplicationButtonClick} />
+            <CustomTableFooter addButtonText='Add Application' />
         )
     }
     
@@ -47,16 +48,12 @@ const Applications = ({ applications, selectedEntries, isAddApplicationFormVisib
                 CustomTableFooter={tableFooter}
                 CustomRows={tableRows}
             />
-        
-            <Modal open={isAddApplicationFormVisible} 
-              size='tiny'
-              onClose={onCloseAddApplicationForm}
-              closeIcon>
-              <Modal.Header>Add New Application</Modal.Header>
-              <Modal.Content>
-                <AddApplicationForm />
-              </Modal.Content>
-            </Modal>        
+            
+            <AddModalForm formHeader="Add New Application" 
+                FormUI={AddApplicationForm} />
+                
+            <EditModalForm formHeader="Edit Selected Application"
+                FormUI={EditApplicationForm} />
         </div>
     )
 }

@@ -1,22 +1,13 @@
 import Applications from '../../ui/applications/Applications'
-import { fetchApplications, hideAddApplicationForm, showAddApplicationForm, hideErrorOnAddingApplication } from '../../../actions'
+import { fetchApplications } from '../../../actions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
-    isAddApplicationFormVisible: state.application.addApplication.addApplicationFormVisibility
 })
 
 const mapDispatchToProps = dispatch => ({
     onFetchApplications() {
         dispatch(fetchApplications())
-    },
-    onCloseAddApplicationForm() {
-        console.log("on close add application form")
-        dispatch(hideAddApplicationForm())
-    },
-    onAddApplicationButtonClick() {
-        dispatch(hideErrorOnAddingApplication())
-        dispatch(showAddApplicationForm())
     }
 })
 

@@ -168,14 +168,12 @@ export const retrieveApplications = applications => {
     }
 }
 
-export const addApplicationRequest = (applicationName) => dispatch => {
-    if (!applicationName) {
+export const addApplicationRequest = application => dispatch => {
+    if (!application.name) {
         dispatch(showErrorOnAddingApplication())
         return
     } 
     
-    let application = {}
-    application.name = applicationName
     fetch('/applications/', {
         method: 'POST',
         body: application
@@ -191,6 +189,31 @@ export const addApplicationRequest = (applicationName) => dispatch => {
 export const addApplication = application => {
     return {
         type: C.ADD_APPLICATION,
+        payload: application
+    }
+}
+
+export const editApplicationRequest = application => dispatch => {
+    if (!application.name) {
+        dispatch(showErrorOnEditingApplication())
+        return 
+    }
+    
+    fetch('/applications/', {
+        method: 'PUT',
+        body: application
+    }).then(response => response.json())
+        .then(jsonResponse => {
+            if (jsonResponse.status === 200) {
+                dispatch(editApplication(application))
+            }        
+    })
+    
+}
+
+export const editApplication = application => {
+    return {
+        type: C.EDIT_APPLICATION,
         payload: application
     }
 }
@@ -235,5 +258,33 @@ export const unselectApplicationEntry = application => {
     return {
         type: C.UNSELECT_APPLICATION_ENTRY,
         payload: application.id
+    }
+}
+
+export const showEditApplicationForm = () => {
+    return {
+        type: C.EDIT_APPLICATION_FORM_VISIBILITY,
+        payload: true
+    }
+}
+
+export const hideEditApplicationForm = () => {
+    return {
+        type: C.EDIT_APPLICATION_FORM_VISIBILITY,
+        payload: false
+    }
+}
+
+export const showErrorOnEditingApplication = () => {
+    return {
+        type: C.HAS_ERROR_ON_EDITING_APPLICATION,
+        payload: true
+    }
+}
+
+export const hideErrorOnEditingApplication = () => {
+    return {
+        type: C.HAS_ERROR_ON_EDITING_APPLICATION,
+        payload: false
     }
 }

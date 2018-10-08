@@ -7,8 +7,8 @@ const mapStateToProps = (state, props) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    onAddApplication(applicationName) {
-        dispatch(addApplicationRequest(applicationName))
+    onAddApplication(application) {
+        dispatch(addApplicationRequest(application))
     }
 }) 
 

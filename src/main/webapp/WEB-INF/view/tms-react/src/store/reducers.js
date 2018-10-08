@@ -38,6 +38,9 @@ export const applicationList = (state=[], action) => {
             return action.payload
         case C.ADD_APPLICATION:
             return [...state, action.payload]
+        case C.EDIT_APPLICATION:
+            const updatedApplication = action.payload
+            return state.filter(application => application.id !== updatedApplication.id ? application : updatedApplication)
         default:
             return state
     }
@@ -75,6 +78,28 @@ export const hasErrorOnAddingApplication = (state=false, action) =>
     (action.type === C.HAS_ERROR_ON_ADDING_APPLICATION) ?
         action.payload :
         state
+        
+export const editApplicationFormVisibility = (state=false, action) => 
+    (action.type === C.EDIT_APPLICATION_FORM_VISIBILITY) ? 
+        action.payload :
+        state
+        
+export const editingApplication = (state=false, action) => 
+    (action.type === C.EDITING_APPLICATION) ?
+        action.payload :
+        state
+
+export const successfullyEditedApplication = (state=false, action) => 
+    (action.type === C.SUCCESSFULLY_EDITED_APPLICATION) ?
+        action.payload :
+        state
+
+export const hasErrorOnEditingApplication = (state=false, action) => 
+    (action.type === C.HAS_ERROR_ON_EDITING_APPLICATION) ?
+        action.payload :
+        state
+
+
 
 export default combineReducers({
     auth: combineReducers({
@@ -92,6 +117,12 @@ export default combineReducers({
             addingNewApplication,
             successfullyAddedApplication,
             hasErrorOnAddingApplication
+        }),
+        editApplication: combineReducers({
+            editApplicationFormVisibility,
+            editingApplication,
+            successfullyEditedApplication,
+            hasErrorOnEditingApplication
         })
     })
 })

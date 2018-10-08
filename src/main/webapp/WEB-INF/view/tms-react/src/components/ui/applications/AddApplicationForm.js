@@ -8,7 +8,8 @@ const AddApplicationForm = ({ onAddApplication }) => {
     const submit = (e) => {
         e.preventDefault()
         let applicationName = _applicationName.value
-        onAddApplication(applicationName)
+        let application = { name: applicationName } 
+        onAddApplication(application)
     }
     
     return (
