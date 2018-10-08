@@ -3,8 +3,7 @@ import { fetchApplications, hideAddApplicationForm, showAddApplicationForm, hide
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
-    isAddApplicationFormVisible: state.application.addApplication.addApplicationFormVisibility,
-    // selectedEntries: state.application.selectedApplicationEntries
+    isAddApplicationFormVisible: state.application.addApplication.addApplicationFormVisibility
 })
 
 const mapDispatchToProps = dispatch => ({

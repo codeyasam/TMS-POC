@@ -3,6 +3,7 @@ import { selectApplicationEntry, unselectApplicationEntry } from '../../../actio
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
+    selectedEntries: state.application.selectedApplicationEntries
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

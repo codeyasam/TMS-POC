@@ -23,13 +23,10 @@ const Applications = ({ applications, selectedEntries, isAddApplicationFormVisib
         {"id": 3, "name": "Application3"}
     ]
     
-    const selectedEntriesCount = 1
-    
     const tableFooter = () => {
         return (
             <CustomTableFooter addButtonText='Add Application'
-                onAddButtonClick={onAddApplicationButtonClick}
-                selectedEntriesCount={selectedEntriesCount} />
+                onAddButtonClick={onAddApplicationButtonClick} />
         )
     }
     
@@ -38,7 +35,7 @@ const Applications = ({ applications, selectedEntries, isAddApplicationFormVisib
             return(
                 <CustomRow row={row}
                     columns={tableColumns}
-                    key={i} />
+                    key={i}  />
             )
         })
     }
