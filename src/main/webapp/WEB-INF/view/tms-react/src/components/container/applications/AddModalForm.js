@@ -1,5 +1,5 @@
 import FormModal from '../../ui/generic/ModalForm'
-import { hideAddApplicationForm } from '../../../actions'
+import { hideAddApplicationForm, completeAddingApplication } from '../../../actions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
@@ -9,6 +9,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = dispatch => ({
     onCloseModal() {
         dispatch(hideAddApplicationForm())
+        dispatch(completeAddingApplication())   
     }
 })
 

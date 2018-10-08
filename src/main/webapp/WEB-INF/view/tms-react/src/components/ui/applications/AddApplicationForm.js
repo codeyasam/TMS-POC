@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Divider, Button } from 'semantic-ui-react'
+import { Divider, Button, Message, Dimmer, Loader } from 'semantic-ui-react'
 
-const AddApplicationForm = ({ onAddApplication=f=>f }) => {
+const AddApplicationForm = ({ onAddApplication=f=>f, hasError, isAddingApplication }) => {
     
     let _applicationName
     
@@ -14,21 +14,30 @@ const AddApplicationForm = ({ onAddApplication=f=>f }) => {
     }
     
     return (
-        <form className="ui form" onSubmit={submit}>
-            <div className="fields">
-                <div className="sixteen wide field">
-                    <input type="text"  
-                        ref={input => _applicationName = input}/>
+        <div>
+            <Dimmer active={isAddingApplication}>
+              <Loader> Adding Application... </Loader>
+            </Dimmer>         
+        
+            <Message error hidden={!hasError}>Application name can't be empty.</Message>
+            <form className="ui form" onSubmit={submit}>
+                <div className="fields">
+                    <div className="sixteen wide field">
+                        <input type="text"  
+                            ref={input => _applicationName = input}/>
+                    </div>
                 </div>
-            </div>
-            <Divider />
-            <Button className="teal" position="ui right floated">Add</Button>
-        </form>
+                <Divider />
+                <Button className="teal" position="ui right floated">Add</Button>
+            </form>   
+        </div>
     )
 }
 
-AddApplicationForm.PropTypes = {
-    onAddApplication: PropTypes.func
+AddApplicationForm.propTypes = {
+    onAddApplication: PropTypes.func,
+    hasError: PropTypes.bool,
+    isAddingApplication: PropTypes.bool
 }
 
 export default AddApplicationForm

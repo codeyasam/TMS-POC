@@ -16,7 +16,7 @@ const EditApplicationForm = ({ onEditApplication, selectedApplication }) => {
         <form className="ui form" onSubmit={submit}>
             <div className="fields">
                 <div className="sixteen wide field">
-                    <input type="text"
+                    <input type="text" value={selectedApplication.name}
                         ref={ input => _applicationName = input } />
                 </div>
             </div>

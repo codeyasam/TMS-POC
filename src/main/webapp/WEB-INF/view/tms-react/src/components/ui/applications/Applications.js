@@ -7,23 +7,27 @@ import AddApplicationForm from '../../container/applications/AddApplicationForm'
 import AddModalForm from '../../container/applications/AddModalForm'
 import EditApplicationForm from '../../container/applications/EditApplicationForm'
 import EditModalForm from '../../container/applications/EditModalForm'
+import PromptModal from '../generic/PromptModal'
 
 const methods = {
     componentDidMount(props) {
         console.log("on component did mount applications")
-        //props.onFetchApplications()
+        props.onFetchApplications()
     }
 }
 
-const Applications = () => {
+const Applications = ({ applicationList, onPromptModalClose=f=>f, isSuccessfullyAdded }) => {
     
     const tableHeaders = ["ID", "Application Name"]
     const tableColumns = ["id", "name"]
+    const tableRowsData = applicationList
+    /*  
+    Test Data
     const tableRowsData = [
         {"id": 1, "name": "Application1"}, 
         {"id": 2, "name": "Application2"}, 
         {"id": 3, "name": "Application3"}
-    ]
+    ] */
     
     const tableFooter = () => {
         return (
@@ -54,6 +58,11 @@ const Applications = () => {
                 
             <EditModalForm formHeader="Edit Selected Application"
                 FormUI={EditApplicationForm} />
+        
+            <PromptModal isVisible={isSuccessfullyAdded}
+                header="Application"
+                message="Successfully added application."
+                onHandleClose={onPromptModalClose} />        
         </div>
     )
 }

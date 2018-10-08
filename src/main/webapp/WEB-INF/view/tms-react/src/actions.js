@@ -173,16 +173,23 @@ export const addApplicationRequest = application => dispatch => {
         dispatch(showErrorOnAddingApplication())
         return
     } 
-    
+    dispatch(addingApplication())
     fetch('/applications/', {
         method: 'POST',
-        body: application
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },        
+        body: JSON.stringify(application)
     }).then(response => response.json()) 
         .then(jsonResponse => {
             console.log(jsonResponse)
-            if (jsonResponse.status === 200) {
+            if (jsonResponse.status === 201) {
                 dispatch(addApplication(jsonResponse.data))
+                dispatch(hideAddApplicationForm())
+                dispatch(successfullyAddApplication())
             }
+        dispatch(completeAddingApplication())
     })
 }
 
@@ -190,6 +197,34 @@ export const addApplication = application => {
     return {
         type: C.ADD_APPLICATION,
         payload: application
+    }
+}
+
+export const addingApplication = () => {
+    return {
+        type: C.ADDING_NEW_APPLICATION,
+        payload: true
+    }
+}
+
+export const completeAddingApplication = () => {
+    return {
+        type: C.ADDING_NEW_APPLICATION,
+        payload: false
+    }
+}
+
+export const successfullyAddApplication = () => {
+    return {
+        type: C.SUCCESSFULLY_ADDED_APPLICATION,
+        payload: true
+    }
+}
+
+export const resetSuccessfullyAddApplication = () => {
+    return {
+        type: C.SUCCESSFULLY_ADDED_APPLICATION,
+        payload: false
     }
 }
 
@@ -226,7 +261,6 @@ export const showAddApplicationForm = () => {
 }
 
 export const hideAddApplicationForm = () => {
-    console.log("hide application form")
     return {
         type: C.ADD_APPLICATION_FORM_VISIBILITY,
         payload: false
@@ -260,7 +294,7 @@ export const unselectApplicationEntry = application => {
         payload: application.id
     }
 }
-
+    
 export const showEditApplicationForm = () => {
     return {
         type: C.EDIT_APPLICATION_FORM_VISIBILITY,
