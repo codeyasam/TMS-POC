@@ -47,6 +47,10 @@ export const selectedApplicationEntries = (state=[], action) => {
     switch(action.type) {
         case C.RETRIEVE_SELECTED_APPLICATIONS:
             return action.payload
+        case C.SELECT_APPLICATION_ENTRY: 
+            return [...state, action.payload]
+        case C.UNSELECT_APPLICATION_ENTRY: 
+            return state.filter(application => application.id !== action.payload)
         default: 
             return state
     }

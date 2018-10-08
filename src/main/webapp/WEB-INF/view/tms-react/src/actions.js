@@ -223,3 +223,17 @@ export const hideErrorOnAddingApplication = () => {
         payload: false
     }
 }
+
+export const selectApplicationEntry = application => {
+    return {
+        type: C.SELECT_APPLICATION_ENTRY,
+        payload: application
+    }
+}
+
+export const unselectApplicationEntry = application => {
+    return {
+        type: C.UNSELECT_APPLICATION_ENTRY,
+        payload: application.id
+    }
+}

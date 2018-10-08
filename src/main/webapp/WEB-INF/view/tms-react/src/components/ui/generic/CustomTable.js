@@ -1,8 +1,7 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
-import CustomRow from '../../container/generic/CustomRow'
 
-const CustomTable = ({tableHeaders, tableRows, tableColumns, CustomTableFooter}) => {
+const CustomTable = ({tableHeaders, CustomRows, CustomTableFooter}) => {
     
     return (
         <div>
@@ -19,13 +18,7 @@ const CustomTable = ({tableHeaders, tableRows, tableColumns, CustomTableFooter})
             </Table.Header>
 
             <Table.Body>
-              { tableRows.map((row, i) => {
-                return(
-                    <CustomRow row={row}
-                        columns={tableColumns}
-                        key={i} />
-                )
-              }) }
+              <CustomRows />
             </Table.Body>
             <CustomTableFooter />
           </Table>        
