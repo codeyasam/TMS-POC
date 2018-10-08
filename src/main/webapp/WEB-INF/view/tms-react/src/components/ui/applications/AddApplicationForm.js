@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Divider, Button } from 'semantic-ui-react'
 
-const AddApplicationForm = ({ onAddApplication }) => {
+const AddApplicationForm = ({ onAddApplication=f=>f }) => {
     
     let _applicationName
     
@@ -24,6 +25,10 @@ const AddApplicationForm = ({ onAddApplication }) => {
             <Button className="teal" position="ui right floated">Add</Button>
         </form>
     )
+}
+
+AddApplicationForm.PropTypes = {
+    onAddApplication: PropTypes.func
 }
 
 export default AddApplicationForm

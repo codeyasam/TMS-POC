@@ -19,6 +19,12 @@
             "editingApplication": false,
             "successfullyEditedApplication": false,
             "hasErrorOnEditingApplication": false
+        },
+        "deleteApplication": {
+            "deleteApplicationFormVisibility": false,
+            "deletingApplication": false,
+            "successfullyDeletedApplication": false,
+            "hasErrorOnDeletingApplication": false
         }
     }
 }

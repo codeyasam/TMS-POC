@@ -59,6 +59,8 @@ export const selectedApplicationEntries = (state=[], action) => {
     }
 }
 
+// Add Application
+
 export const addApplicationFormVisibility = (state=false, action) => 
     (action.type === C.ADD_APPLICATION_FORM_VISIBILITY) ?
         action.payload :
@@ -78,6 +80,8 @@ export const hasErrorOnAddingApplication = (state=false, action) =>
     (action.type === C.HAS_ERROR_ON_ADDING_APPLICATION) ?
         action.payload :
         state
+        
+// Edit Application        
         
 export const editApplicationFormVisibility = (state=false, action) => 
     (action.type === C.EDIT_APPLICATION_FORM_VISIBILITY) ? 
@@ -99,7 +103,26 @@ export const hasErrorOnEditingApplication = (state=false, action) =>
         action.payload :
         state
 
-
+// delete Application
+export const deleteApplicationFormVisibility = (state=false, action) => 
+    (action.type === C.DELETE_APPLICATION_FORM_VISIBILITY) ?
+        action.payload :
+        state
+        
+export const deletingApplication = (state=false, action) =>
+    (action.type === C.DELETING_APPLICATION) ?
+        action.payload :
+        state
+        
+export const successfullyDeletedApplication = (state=false, action) => 
+    (action.type === C.SUCCESSFULLY_DELETED_APPLICATION) ?
+        action.payload :
+        state
+        
+export const hasErrorOnDeletingApplication = (state=false, action) =>
+    (action.type === C.HAS_ERROR_ON_DELETING_APPLICATION) ?
+        action.payload :
+        state
 
 export default combineReducers({
     auth: combineReducers({
@@ -123,6 +146,12 @@ export default combineReducers({
             editingApplication,
             successfullyEditedApplication,
             hasErrorOnEditingApplication
+        }),
+        deleteApplication: combineReducers({
+            deleteApplicationFormVisibility,
+            deletingApplication,
+            successfullyDeletedApplication, 
+            hasErrorOnDeletingApplication
         })
     })
 })
