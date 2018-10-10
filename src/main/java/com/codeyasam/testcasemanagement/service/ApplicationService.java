@@ -1,12 +1,14 @@
 package com.codeyasam.testcasemanagement.service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codeyasam.testcasemanagement.domain.Application;
 import com.codeyasam.testcasemanagement.dto.ApplicationDTO;
@@ -52,6 +54,13 @@ public class ApplicationService {
 	
 	public Application searchByName(String name) {
 		return applicationRepository.findByName(name);
+	}
+	
+	@Transactional("transactionManager")
+	public void deleteApplications(List<Application> applications) {
+		List<Long> idList = new ArrayList<>();
+		applications.forEach(application -> idList.add(application.getId()));
+		applicationRepository.deleteByIds(idList);
 	}
 	
 	public ApplicationDTO convertToDTO(Application application) {

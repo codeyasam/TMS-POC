@@ -121,6 +121,12 @@ public class ApplicationController {
 				.build();
 	}
 	
+	@RequestMapping(value="/deleteApplications", method=RequestMethod.DELETE)
+	public ResponseEntity<HttpStatus> deleteApplications(@RequestBody List<Application> applications) {
+		applicationService.deleteApplications(applications);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/import", method=RequestMethod.POST)
 	public ResponseEntity<HttpStatus> importApplicationList(@RequestParam("file") MultipartFile multipartFile) throws IOException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 		String path = Paths.get(TARGET_FOLDER, TEMPORARY_UPLOADS_FOLDER, APPLICATION_CSV_FILENAME).toAbsolutePath().toString();
