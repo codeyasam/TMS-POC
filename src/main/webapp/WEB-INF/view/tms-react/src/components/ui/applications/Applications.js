@@ -10,12 +10,12 @@ import EditModalForm from '../../container/applications/EditModalForm'
 import DeleteApplicationForm from '../../container/applications/DeleteApplicationForm'
 import DeleteModalForm from '../../container/applications/DeleteModalForm'
 import PromptModal from '../generic/PromptModal'
-import Pagination from '../generic/Pagination'
+import Pagination from '../../container/applications/Pagination'
 
 const methods = {
     componentDidMount(props) {
         console.log("on component did mount applications")
-        //props.onFetchApplications()
+        props.onFetchApplications(props)
     }
 }
 

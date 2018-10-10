@@ -25,6 +25,12 @@
             "deletingApplication": false,
             "successfullyDeletedApplication": false,
             "hasErrorOnDeletingApplication": false
+        },
+        "pagination": {
+            "paginationTotal": 0,
+            "paginationPage": 1,
+            "paginationSize": 5,
+            "paginationNavSize": 5
         }
     }
 }

@@ -145,8 +145,8 @@ export const logingIn = isLogingIn => {
     }
 }
 
-export const fetchApplications = () => dispatch => {
-    fetch('/applications/?page=1&size=10', {
+export const fetchApplications = (currentPage, pageSize) => dispatch => {
+    fetch(`/applications/?page=${encodeURIComponent(currentPage)}&size=${encodeURIComponent(pageSize)}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -157,6 +157,8 @@ export const fetchApplications = () => dispatch => {
             console.log(jsonResponse)
             if (jsonResponse.status === 200) {
                 dispatch(retrieveApplications(jsonResponse.data))
+                dispatch(setPaginationTotal(jsonResponse.total))
+                dispatch(setPaginationPage(currentPage))
             }
     })
 }
@@ -168,7 +170,7 @@ export const retrieveApplications = applications => {
     }
 }
 
-export const addApplicationRequest = application => dispatch => {
+export const addApplicationRequest = (application, currentPage, pageSize) => dispatch => {
     if (!application.name) {
         dispatch(showErrorOnAddingApplication())
         return
@@ -188,6 +190,7 @@ export const addApplicationRequest = application => dispatch => {
                 dispatch(addApplication(jsonResponse.data))
                 dispatch(hideAddApplicationForm())
                 dispatch(successfullyAddApplication())
+                fetchApplications(currentPage, pageSize)
             }
         dispatch(completeAddingApplication())
     })
@@ -448,5 +451,25 @@ export const hideErrorOnDeletingApplication = () => {
 export const clearSelectedApplicationEntries = () => {
     return {
         type: C.CLEAR_APPLICATION_ENTRY
+    }
+}
+
+// pagination
+
+export const setPaginationTotal = total => {
+    return {
+        type: C.PAGINATION_TOTAL,
+        payload: total
+    }
+}
+
+export const setPaginationPageRequest = (page, pageSize) => dispatch => {
+    dispatch(fetchApplications(page, pageSize))
+}
+
+export const setPaginationPage = page => {
+    return {
+        type: C.PAGINATION_PAGE,
+        payload: page
     }
 }

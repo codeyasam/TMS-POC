@@ -131,6 +131,35 @@ export const hasErrorOnDeletingApplication = (state=false, action) =>
     (action.type === C.HAS_ERROR_ON_DELETING_APPLICATION) ?
         action.payload :
         state
+        
+// pagination
+export const paginationTotal = (state=0, action) => 
+    (action.type === C.PAGINATION_TOTAL) ?
+        action.payload :
+        state
+
+export const paginationPage = (state=1, action) => {
+    switch(action.type) {
+        case C.PAGINATION_PAGE: 
+            return action.payload
+        case C.PAGINATION_NEXT_PAGE:
+            return state + 1
+        case C.PAGINATION_PREVIOUS_PAGE:
+            return state - 1
+        default:
+            return state
+    }
+}
+        
+export const paginationSize = (state=5, action) =>
+    (action.type === C.PAGINATION_SIZE) ?
+        action.payload :
+        state
+        
+export const paginationNavSize = (state=5, action) => 
+    (action.type === C.PAGINATION_NAV_SIZE) ?
+        action.payload :
+        state
 
 export default combineReducers({
     auth: combineReducers({
@@ -160,6 +189,12 @@ export default combineReducers({
             deletingApplication,
             successfullyDeletedApplication, 
             hasErrorOnDeletingApplication
+        }),
+        pagination: combineReducers({
+            paginationTotal,
+            paginationPage,
+            paginationSize,
+            paginationNavSize
         })
     })
 })

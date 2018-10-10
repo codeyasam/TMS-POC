@@ -8,6 +8,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
     onSelectEntry(e, data) {
+        console.log(ownProps)
         let isEntrySelected = data.checked
         let application = ownProps.row
         if (isEntrySelected) {

@@ -4,12 +4,14 @@ import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
     hasError: state.application.addApplication.hasErrorOnAddingApplication,
-    isAddingApplication: state.application.addApplication.addingNewApplication
+    isAddingApplication: state.application.addApplication.addingNewApplication,
+    currentPage: state.application.pagination.paginationPage,
+    pageSize: state.application.pagination.paginationSize    
 })
 
 const mapDispatchToProps = dispatch => ({
-    onAddApplication(application) {
-        dispatch(addApplicationRequest(application))
+    onAddApplication(application, currentPage, pageSize) {
+        dispatch(addApplicationRequest(application, currentPage, pageSize))
     }
 }) 
 
