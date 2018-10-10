@@ -1,5 +1,5 @@
 import CustomTableFooter from '../../ui/generic/CustomTableFooter'
-import { showAddApplicationForm, hideErrorOnAddingApplication, showEditApplicationForm, hideErrorOnEditingApplication } from '../../../actions'
+import { showAddApplicationForm, hideErrorOnAddingApplication, showEditApplicationForm, hideErrorOnEditingApplication, showDeleteApplicationForm, hideErrorOnDeletingApplication } from '../../../actions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
@@ -14,6 +14,10 @@ const mapDispatchToProps = dispatch => ({
     onEditButtonClick() {
         dispatch(hideErrorOnEditingApplication())
         dispatch(showEditApplicationForm())
+    },
+    onDeleteButtonClick() {
+        dispatch(hideErrorOnDeletingApplication())
+        dispatch(showDeleteApplicationForm())
     }
 })
 

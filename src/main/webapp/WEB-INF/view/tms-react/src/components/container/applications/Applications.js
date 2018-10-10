@@ -1,10 +1,12 @@
 import Applications from '../../ui/applications/Applications'
-import { fetchApplications, resetSuccessfullyAddApplication } from '../../../actions'
+import { fetchApplications, resetSuccessfullyAddApplication, resetSuccessfullyEditApplication, resetSuccessfullyDeleteApplication } from '../../../actions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
     applicationList: state.application.applicationList,
-    isSuccessfullyAdded: state.application.addApplication.successfullyAddedApplication    
+    isSuccessfullyAdded: state.application.addApplication.successfullyAddedApplication,
+    isSuccessfullyEdited: state.application.editApplication.successfullyEditedApplication,
+    isSuccessfullyDeleted: state.application.deleteApplication.successfullyDeletedApplication
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -13,7 +15,8 @@ const mapDispatchToProps = dispatch => ({
     }, 
     onPromptModalClose() {
         dispatch(resetSuccessfullyAddApplication())        
-        //also reset successfullyEditApplication
+        dispatch(resetSuccessfullyEditApplication())
+        dispatch(resetSuccessfullyDeleteApplication())
     }
 })
 

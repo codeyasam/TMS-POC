@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Table } from 'semantic-ui-react'
 
-const CustomTableFooter =({ addButtonText, onAddButtonClick=f=>f, onEditButtonClick=f=>f, selectedEntriesCount }) => {
+const CustomTableFooter =({ addButtonText, onAddButtonClick=f=>f, onEditButtonClick=f=>f, onDeleteButtonClick=f=>f, selectedEntriesCount }) => {
     return (
         <Table.Footer fullWidth>
           <Table.Row>
@@ -12,7 +12,7 @@ const CustomTableFooter =({ addButtonText, onAddButtonClick=f=>f, onEditButtonCl
                 { addButtonText }
               </Button>
               <Button disabled={selectedEntriesCount !==1} size='small' onClick={onEditButtonClick}>Edit</Button>
-              <Button disabled={selectedEntriesCount ===0} size='small'>
+              <Button disabled={selectedEntriesCount ===0} size='small' onClick={onDeleteButtonClick}>
                 Delete
               </Button>
             </Table.HeaderCell>

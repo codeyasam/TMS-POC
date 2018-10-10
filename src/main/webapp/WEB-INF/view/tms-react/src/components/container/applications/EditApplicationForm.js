@@ -1,13 +1,15 @@
 import EditApplicationForm from '../../ui/applications/EditApplicationForm'
+import { editApplicationRequest } from '../../../actions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
-    selectedApplication: state.application.selectedApplicationEntries[0]
+    selectedApplication: state.application.selectedApplicationEntries[0],
+    isEditingApplication: state.application.editApplication.editingApplication
 })
 
 const mapDispatchToProps = dispatch => ({
     onEditApplication(application) {
-        console.log("here on edit application")
+        dispatch(editApplicationRequest(application))
     }
 })
 

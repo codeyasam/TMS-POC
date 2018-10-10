@@ -1,15 +1,15 @@
 import FormModal from '../../ui/generic/ModalForm'
-import { hideEditApplicationForm, completeEditingApplication } from '../../../actions'
+import { hideDeleteApplicationForm, completeDeletingApplication } from '../../../actions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
-    isVisible: state.application.editApplication.editApplicationFormVisibility
+    isVisible: state.application.deleteApplication.deleteApplicationFormVisibility
 })
 
 const mapDispatchToProps = dispatch => ({
     onCloseModal() {
-        dispatch(hideEditApplicationForm())
-        dispatch(completeEditingApplication())
+        dispatch(hideDeleteApplicationForm())
+        dispatch(completeDeletingApplication())
     }
 })
 

@@ -207,9 +207,30 @@ export const addingApplication = () => {
     }
 }
 
+export const editingApplication = () => {
+    return {
+        type: C.EDITING_APPLICATION,
+        payload: true
+    }
+}
+
+export const deletingApplication = () => {
+    return {
+        type: C.DELETING_APPLICATION,
+        payload: true
+    }
+}
+
 export const completeAddingApplication = () => {
     return {
         type: C.ADDING_NEW_APPLICATION,
+        payload: false
+    }
+}
+
+export const completeEditingApplication = () => {
+    return {
+        type: C.EDITING_APPLICATION,
         payload: false
     }
 }
@@ -221,9 +242,30 @@ export const successfullyAddApplication = () => {
     }
 }
 
+export const successfullyEditApplication = () => {
+    return {
+        type: C.SUCCESSFULLY_EDITED_APPLICATION,
+        payload: true
+    }
+}
+
 export const resetSuccessfullyAddApplication = () => {
     return {
         type: C.SUCCESSFULLY_ADDED_APPLICATION,
+        payload: false
+    }
+}
+
+export const resetSuccessfullyEditApplication = () => {
+    return {
+        type: C.SUCCESSFULLY_EDITED_APPLICATION,
+        payload: false
+    }
+}
+
+export const resetSuccessfullyDeleteApplication = () => {
+    return {
+        type: C.SUCCESSFULLY_DELETED_APPLICATION,
         payload: false
     }
 }
@@ -234,16 +276,82 @@ export const editApplicationRequest = application => dispatch => {
         return 
     }
     
+    dispatch(editingApplication())
     fetch('/applications/', {
         method: 'PUT',
-        body: application
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },        
+        body: JSON.stringify(application)
     }).then(response => response.json())
         .then(jsonResponse => {
             if (jsonResponse.status === 200) {
-                dispatch(editApplication(application))
-            }        
+                dispatch(editApplication(jsonResponse.data))
+                dispatch(hideEditApplicationForm())
+                dispatch(successfullyEditApplication())
+            } 
+            dispatch(completeEditingApplication())
     })
     
+}
+
+export const deleteApplicationRequest = entriesToDelete => dispatch => {
+    console.log("request started.")
+    dispatch(deletingApplication())
+    fetch('/applications/deleteApplications', {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(entriesToDelete)
+    }).then(response => {
+        console.log("request completed.")
+        console.log(response)
+        if (response.status === 200) {
+            dispatch(deleteApplication(entriesToDelete))
+            dispatch(hideDeleteApplicationForm())
+            dispatch(successfullyDeletedApplication())
+            dispatch(clearSelectedApplicationEntries())
+        }
+        dispatch(completeDeletingApplication())
+    })
+}
+
+export const showDeleteApplicationForm = () => {
+    return {
+        type: C.DELETE_APPLICATION_FORM_VISIBILITY,
+        payload: true
+    }
+}
+
+export const hideDeleteApplicationForm = () => {
+    return {
+        type: C.DELETE_APPLICATION_FORM_VISIBILITY,
+        payload: false
+    }
+}
+
+export const successfullyDeletedApplication = () => {
+    return {
+        type: C.SUCCESSFULLY_DELETED_APPLICATION,
+        payload: true
+    }
+}
+
+export const completeDeletingApplication = () => {
+    return {
+        type: C.DELETING_APPLICATION,
+        payload: false
+    }
+}
+
+export const deleteApplication = entriesToDelete => {
+    return {
+        type: C.DELETE_APPLICATION,
+        payload: entriesToDelete
+    }
 }
 
 export const editApplication = application => {
@@ -320,5 +428,25 @@ export const hideErrorOnEditingApplication = () => {
     return {
         type: C.HAS_ERROR_ON_EDITING_APPLICATION,
         payload: false
+    }
+}
+
+export const showErrorOnDeletingApplication = () => {
+    return {
+        type: C.HAS_ERROR_ON_DELETING_APPLICATION,
+        payload: true
+    }
+}
+
+export const hideErrorOnDeletingApplication = () => {
+    return {
+        type: C.HAS_ERROR_ON_DELETING_APPLICATION,
+        payload: false
+    }
+}
+
+export const clearSelectedApplicationEntries = () => {
+    return {
+        type: C.CLEAR_APPLICATION_ENTRY
     }
 }

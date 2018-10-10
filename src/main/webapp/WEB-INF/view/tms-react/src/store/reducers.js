@@ -41,6 +41,12 @@ export const applicationList = (state=[], action) => {
         case C.EDIT_APPLICATION:
             const updatedApplication = action.payload
             return state.filter(application => application.id !== updatedApplication.id ? application : updatedApplication)
+        case C.DELETE_APPLICATION:
+            const entriesToDelete = action.payload
+            const entriesIdList = entriesToDelete.map(entry => {
+                return entry.id
+            })
+            return state.filter(entry => entriesIdList.indexOf(entry.id) === -1)
         default:
             return state
     }
@@ -54,6 +60,8 @@ export const selectedApplicationEntries = (state=[], action) => {
             return [...state, action.payload]
         case C.UNSELECT_APPLICATION_ENTRY: 
             return state.filter(application => application.id !== action.payload)
+        case C.CLEAR_APPLICATION_ENTRY:
+            return [] 
         default: 
             return state
     }

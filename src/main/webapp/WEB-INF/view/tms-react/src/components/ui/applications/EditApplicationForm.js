@@ -1,7 +1,7 @@
 import React from 'react'
-import { Divider, Button } from 'semantic-ui-react'
+import { Divider, Button, Dimmer, Loader } from 'semantic-ui-react'
 
-const EditApplicationForm = ({ onEditApplication, selectedApplication }) => {
+const EditApplicationForm = ({ onEditApplication, selectedApplication, isEditingApplication }) => {
     
     let _applicationName
     
@@ -13,16 +13,21 @@ const EditApplicationForm = ({ onEditApplication, selectedApplication }) => {
     }
     
     return (
-        <form className="ui form" onSubmit={submit}>
-            <div className="fields">
-                <div className="sixteen wide field">
-                    <input type="text" value={selectedApplication.name}
-                        ref={ input => _applicationName = input } />
+        <div>
+            <Dimmer active={isEditingApplication}>
+              <Loader> Updating Application... </Loader>
+            </Dimmer>              
+            <form className="ui form" onSubmit={submit}>
+                <div className="fields">
+                    <div className="sixteen wide field">
+                        <input type="text" defaultValue={selectedApplication.name}
+                            ref={ input => _applicationName = input } />
+                    </div>
                 </div>
-            </div>
-            <Divider />
-            <Button className="teal" position="ui right floated">Save</Button>
-        </form>
+                <Divider />
+                <Button className="teal" position="ui right floated">Save</Button>
+            </form>
+        </div>
     )
 }
 
