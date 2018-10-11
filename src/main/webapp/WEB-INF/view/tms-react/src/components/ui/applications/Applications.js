@@ -19,7 +19,7 @@ const methods = {
     }
 }
 
-const Applications = ({ applicationList, onPromptModalClose=f=>f, isSuccessfullyAdded, isSuccessfullyEdited, isSuccessfullyDeleted }) => {
+const Applications = ({ applicationList, onPromptModalClose=f=>f, isSuccessfullyAdded, isSuccessfullyEdited, isSuccessfullyDeleted, currentPage }) => {
     
     const tableHeaders = ["ID", "Application Name"]
     const tableColumns = ["id", "name"]
@@ -43,7 +43,8 @@ const Applications = ({ applicationList, onPromptModalClose=f=>f, isSuccessfully
             return(
                 <CustomRow row={row}
                     columns={tableColumns}
-                    key={i}  />
+                    key={i}
+                    currentPage={currentPage} />
             )
         })
     }

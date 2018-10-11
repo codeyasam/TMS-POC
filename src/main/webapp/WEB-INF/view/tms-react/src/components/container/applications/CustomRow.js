@@ -11,6 +11,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         console.log(ownProps)
         let isEntrySelected = data.checked
         let application = ownProps.row
+        application.currentPage = ownProps.currentPage
         if (isEntrySelected) {
             dispatch(selectApplicationEntry(application))
         } else {
