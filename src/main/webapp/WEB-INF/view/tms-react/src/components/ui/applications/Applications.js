@@ -11,6 +11,7 @@ import DeleteApplicationForm from '../../container/applications/DeleteApplicatio
 import DeleteModalForm from '../../container/applications/DeleteModalForm'
 import PromptModal from '../generic/PromptModal'
 import Pagination from '../../container/applications/Pagination'
+import SelectedEntries from '../../container/applications/SelectedEntries'
 
 const methods = {
     componentDidMount(props) {
@@ -57,6 +58,7 @@ const Applications = ({ applicationList, onPromptModalClose=f=>f, isSuccessfully
                 CustomRows={tableRows}
             />
             <Pagination />
+            <SelectedEntries />
             
             <AddModalForm formHeader="Add New Application" 
                 FormUI={AddApplicationForm} />

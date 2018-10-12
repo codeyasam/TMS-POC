@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Divider, Message, Dimmer, Loader } from 'semantic-ui-react'
 
-const DeleteApplicationForm = ({ selectedEntries, onDeleteApplication=f=>f, isDeletingApplication, hasError, onCancel=f=>f }) => {
+const DeleteApplicationForm = ({ selectedEntries, onDeleteApplication=f=>f, isDeletingApplication, hasError, onCancel=f=>f, currentPage, pageSize }) => {
     
     const onDeleteButtonClick = (e) => {
         e.preventDefault()
         const entriesToDelete = selectedEntries
-        onDeleteApplication(entriesToDelete)
+        onDeleteApplication(entriesToDelete, currentPage, pageSize)
     }
     
     return (

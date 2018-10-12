@@ -62,6 +62,8 @@ export const selectedApplicationEntries = (state=[], action) => {
             return state.filter(application => application.id !== action.payload)
         case C.CLEAR_APPLICATION_ENTRY:
             return [] 
+        case C.CLEAR_APPLICATION_ENTRY_BY_PAGE:
+            return state.filter(application => application.currentPage !== action.payload)
         default: 
             return state
     }

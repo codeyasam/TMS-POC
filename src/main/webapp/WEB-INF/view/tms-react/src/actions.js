@@ -187,7 +187,7 @@ export const addApplicationRequest = (application, currentPage, pageSize) => dis
         .then(jsonResponse => {
             console.log(jsonResponse)
             if (jsonResponse.status === 201) {
-                dispatch(addApplication(jsonResponse.data))
+                //dispatch(addApplication(jsonResponse.data))
                 dispatch(hideAddApplicationForm())
                 dispatch(successfullyAddApplication())
                 fetchApplications(currentPage, pageSize)
@@ -299,7 +299,7 @@ export const editApplicationRequest = application => dispatch => {
     
 }
 
-export const deleteApplicationRequest = entriesToDelete => dispatch => {
+export const deleteApplicationRequest = (entriesToDelete, currentPage, pageSize) => dispatch => {
     console.log("request started.")
     dispatch(deletingApplication())
     fetch('/applications/deleteApplications', {
@@ -313,10 +313,11 @@ export const deleteApplicationRequest = entriesToDelete => dispatch => {
         console.log("request completed.")
         console.log(response)
         if (response.status === 200) {
-            dispatch(deleteApplication(entriesToDelete))
+            // dispatch(deleteApplication(entriesToDelete))
             dispatch(hideDeleteApplicationForm())
             dispatch(successfullyDeletedApplication())
             dispatch(clearSelectedApplicationEntries())
+            dispatch(fetchApplications(currentPage, pageSize))
         }
         dispatch(completeDeletingApplication())
     })
@@ -451,6 +452,13 @@ export const hideErrorOnDeletingApplication = () => {
 export const clearSelectedApplicationEntries = () => {
     return {
         type: C.CLEAR_APPLICATION_ENTRY
+    }
+}
+
+export const clearSelectedApplicationEntriesByPage = page => {
+    return {
+        type: C.CLEAR_APPLICATION_ENTRY_BY_PAGE,
+        payload: page
     }
 }
 

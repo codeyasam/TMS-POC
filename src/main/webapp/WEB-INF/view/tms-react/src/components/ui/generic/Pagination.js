@@ -1,9 +1,9 @@
 import React from 'react'
-import { Menu, Icon, Segment, Label, Button, Divider } from 'semantic-ui-react'
+import { Menu, Icon, Segment, Label, Button } from 'semantic-ui-react'
 
-const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPaginationPage=f=>f, onSetPaginationNextPage, onSetPaginationPreviousPage, selectedEntries, onClearSelectedEntries }) => {
+const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPaginationPage=f=>f, onSetPaginationNextPage, onSetPaginationPreviousPage }) => {
     
-    const totalPages = total / pageSize
+    const totalPages = Math.ceil(total / pageSize)
     
     let _pageNumberJumpValue
     
@@ -18,7 +18,6 @@ const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPagin
         endIndex = endIndex <= totalPages + 1 ?
             endIndex : startIndex + totalPages % navSize
         
-        console.log(endIndex)
         for (let i = startIndex; i < endIndex; i++) {
             console.log("executed")
             menuArray = [...menuArray, 
@@ -32,31 +31,8 @@ const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPagin
     
     const submit = (e) => {
         e.preventDefault()
-        let pageNumber = _pageNumberJumpValue.value
+        let pageNumber = parseInt(_pageNumberJumpValue.value, 10)
         onSetPaginationPage(pageNumber, pageSize)
-    }
-                         
-    const setupSelectedEntriesInfo = () => {
-        let entriesPerPageCount = mapSelectedEntriesToPages()
-        return entriesPerPageCount.map((value, key) => {
-            return  (
-                <Label>{value} selected entries on page {key}</Label>
-            )                 
-        })
-    }
-                         
-    const mapSelectedEntriesToPages = () => {
-        let pages = []
-        selectedEntries.forEach(entry => {
-            let entriesCountByPage = pages[entry.currentPage]
-            if (entriesCountByPage) {
-                pages[entry.currentPage] += 1
-            } else {
-                pages[entry.currentPage] = 1
-            }
-        })
-        console.log(pages)
-        return pages
     }
                          
     return (
@@ -69,17 +45,10 @@ const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPagin
                                 type='number' min='1' 
                                 max={totalPages}
                                 ref={input => _pageNumberJumpValue = input} />
-                          <Button className="two wide field" >Go</Button>    
+                          <Button>Go</Button>    
                           <Label>{totalPages} total pages</Label>
                     </div>
                 </form>
-                <div>
-                    <div>
-                        { setupSelectedEntriesInfo() }
-                    </div>
-                    <Divider />
-                    <Button onClick={onClearSelectedEntries}>Clear Selected Entries</Button>
-                </div>
             </Segment>
             <Segment>
                 <Menu floated='right' pagination>
