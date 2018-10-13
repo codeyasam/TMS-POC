@@ -14,4 +14,5 @@ public interface ApplicationRepository extends PagingAndSortingRepository<Applic
 	@Modifying
 	@Query("delete from Application application where application.id in ?1")
 	void deleteByIds(List<Long> idList);
+
 }

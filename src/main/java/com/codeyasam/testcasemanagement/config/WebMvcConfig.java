@@ -28,8 +28,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		 	.addResourceLocations("classpath:/static/");
 	}
 	
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		 registry.addMapping("/**").allowedOrigins("http://localhost:3000");
-	}
+//	@Override
+//	public void addCorsMappings(CorsRegistry registry) {
+//		 registry.addMapping("/**").allowedOrigins("http://localhost:3000");
+//	}
 }

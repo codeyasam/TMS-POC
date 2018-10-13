@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +21,13 @@ import com.codeyasam.testcasemanagement.repository.ApplicationRepository;
 public class ApplicationService {
 	
 	private ApplicationRepository applicationRepository;
-	private ModelMapper modelMapper;
+	private EntityManager entityManager;
+    private ModelMapper modelMapper;
 	
 	@Autowired
-	public ApplicationService(ApplicationRepository applicationRepository, ModelMapper modelMapper) {
+	public ApplicationService(ApplicationRepository applicationRepository, EntityManager entityManager, ModelMapper modelMapper) {
 		this.applicationRepository = applicationRepository;
+        this.entityManager = entityManager;
 		this.modelMapper = modelMapper;
 	}
 	
@@ -55,6 +60,22 @@ public class ApplicationService {
 	public Application searchByName(String name) {
 		return applicationRepository.findByName(name);
 	}
+    
+    public List<Application> retrieveBySearchText(String searchText, Pageable pageable) {
+        if (searchText.isEmpty()) searchText="%%";
+        Query query = entityManager.createQuery("select application from Application application WHERE cast(application.id as string) LIKE :searchText OR application.name LIKE :searchText")
+            .setParameter("searchText", searchText)
+            .setFirstResult(pageable.getOffset())
+            .setMaxResults(pageable.getPageSize());
+        return query.getResultList();
+    }
+    
+    public long countBySearchText(String searchText) {
+        if (searchText.isEmpty()) searchText="%%";
+        Query query = entityManager.createQuery("select count(application.id) from Application application WHERE cast(application.id as string) LIKE :searchText OR application.name LIKE :searchText")
+            .setParameter("searchText", searchText);
+        return (long) query.getSingleResult();
+    }
 	
 	@Transactional("transactionManager")
 	public void deleteApplications(List<Application> applications) {

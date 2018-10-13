@@ -45,7 +45,7 @@ import com.codeyasam.testcasemanagement.dto.response.SingleDataResponse;
 import com.codeyasam.testcasemanagement.service.ApplicationService;
 
 @RestController
-@RequestMapping(value="/applications")
+@RequestMapping(value="/api/applications")
 public class ApplicationController {
 	
 	private ApplicationService applicationService;
@@ -120,6 +120,18 @@ public class ApplicationController {
 				.setStatus(HttpStatus.OK.value())
 				.build();
 	}
+    
+    @RequestMapping(value="/searchByText", method=RequestMethod.GET)
+    public MultipleDataResponse<ApplicationDTO> retrieveBySearchText(@RequestParam("input") String searchText, Pageable pageable) {
+        List<Application> applicationList = applicationService.retrieveBySearchText(searchText, pageable);
+        List<ApplicationDTO> applicationDTOList = applicationService.convertToDTOList(applicationList);
+        return new MultipleDataResponse.Builder<ApplicationDTO>()
+            .setData(applicationDTOList)
+            .setTotal(applicationService.countBySearchText(searchText))
+            .setPrompt("Successfully retrieved applications.")
+            .setStatus(HttpStatus.OK.value())
+            .build();
+    }
 	
 	@RequestMapping(value="/deleteApplications", method=RequestMethod.DELETE)
 	public ResponseEntity<HttpStatus> deleteApplications(@RequestBody List<Application> applications) {
