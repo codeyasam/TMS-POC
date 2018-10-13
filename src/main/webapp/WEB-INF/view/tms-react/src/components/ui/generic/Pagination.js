@@ -1,7 +1,7 @@
 import React from 'react'
 import { Menu, Icon, Segment, Label, Button } from 'semantic-ui-react'
 
-const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPaginationPage=f=>f, onSetPaginationNextPage, onSetPaginationPreviousPage }) => {
+const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPaginationPage=f=>f, onSetPaginationNextPage, onSetPaginationPreviousPage, searchText }) => {
     
     const totalPages = Math.ceil(total / pageSize)
     
@@ -23,7 +23,7 @@ const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPagin
             menuArray = [...menuArray, 
                 <Menu.Item as='a' 
                     key={i} 
-                    onClick={() => onSetPaginationPage(i, pageSize)}
+                    onClick={() => onSetPaginationPage(searchText, i, pageSize)}
                     active={i === currentPage}>{i}</Menu.Item>]
         }
         return menuArray
@@ -32,7 +32,7 @@ const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPagin
     const submit = (e) => {
         e.preventDefault()
         let pageNumber = parseInt(_pageNumberJumpValue.value, 10)
-        onSetPaginationPage(pageNumber, pageSize)
+        onSetPaginationPage(searchText, pageNumber, pageSize)
     }
                          
     return (
@@ -52,18 +52,18 @@ const Pagination = ({ total=20, pageSize=3, currentPage=6, navSize=5, onSetPagin
             </Segment>
             <Segment>
                 <Menu floated='right' pagination>
-                    <Menu.Item as='a' icon disabled={currentPage === 1} onClick={() => onSetPaginationPage(1, pageSize)}>
+                    <Menu.Item as='a' icon disabled={currentPage === 1} onClick={() => onSetPaginationPage(searchText, 1, pageSize)}>
                         <Icon name='chevron left' />
                         <Icon name='chevron left' />                
                     </Menu.Item>        
-                    <Menu.Item as='a' icon disabled={currentPage === 1} onClick={() => onSetPaginationPreviousPage(currentPage, pageSize)}>
+                    <Menu.Item as='a' icon disabled={currentPage === 1} onClick={() => onSetPaginationPreviousPage(searchText, currentPage, pageSize)}>
                         <Icon name='chevron left' />
                     </Menu.Item>
                     {setupNav()}
-                    <Menu.Item as='a' icon disabled={currentPage === totalPages} onClick={() => onSetPaginationNextPage(currentPage, pageSize)}>
+                    <Menu.Item as='a' icon disabled={currentPage === totalPages} onClick={() => onSetPaginationNextPage(searchText, currentPage, pageSize)}>
                         <Icon name='chevron right' />
                     </Menu.Item>
-                    <Menu.Item as='a' icon disabled={currentPage === totalPages} onClick={() => onSetPaginationPage(totalPages, pageSize)}>
+                    <Menu.Item as='a' icon disabled={currentPage === totalPages} onClick={() => onSetPaginationPage(searchText, totalPages, pageSize)}>
                         <Icon name='chevron right' />
                         <Icon name='chevron right' />                
                     </Menu.Item>            

@@ -6,14 +6,15 @@ const mapStateToProps = (state, props) => ({
     selectedEntries: state.application.selectedApplicationEntries,
     isDeletingApplication: state.application.deleteApplication.deletingApplication,
     hasError: state.application.deleteApplication.hasErrorOnDeletingApplication,
+    searchText: state.application.retrieveApplication.applicationSearchText,
     currentPage: state.application.pagination.paginationPage,
     pageSize: state.application.pagination.paginationSize
 })
 
 const mapDispatchToProps = dispatch => ({
-    onDeleteApplication(entriesToDelete, currentPage, pageSize) {
+    onDeleteApplication(entriesToDelete, searchText, currentPage, pageSize) {
         console.log("on delete")
-        dispatch(deleteApplicationRequest(entriesToDelete, currentPage, pageSize))
+        dispatch(deleteApplicationRequest(entriesToDelete, searchText, currentPage, pageSize))
     },
     onCancel() {
         dispatch(hideDeleteApplicationForm())

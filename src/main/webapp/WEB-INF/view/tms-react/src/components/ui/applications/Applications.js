@@ -12,6 +12,7 @@ import DeleteModalForm from '../../container/applications/DeleteModalForm'
 import PromptModal from '../generic/PromptModal'
 import Pagination from '../../container/applications/Pagination'
 import SelectedEntries from '../../container/applications/SelectedEntries'
+import SearchForm from '../../container/applications/SearchForm'
 
 const methods = {
     componentDidMount(props) {
@@ -52,6 +53,7 @@ const Applications = ({ applicationList, onPromptModalClose=f=>f, isSuccessfully
     
     return (
         <div>
+            <SearchForm />
             <CustomTable tableHeaders={tableHeaders}
                 tableColumns={tableColumns}
                 CustomTableFooter={tableFooter}

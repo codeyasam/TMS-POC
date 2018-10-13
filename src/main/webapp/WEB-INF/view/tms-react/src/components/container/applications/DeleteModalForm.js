@@ -3,7 +3,8 @@ import { hideDeleteApplicationForm, completeDeletingApplication } from '../../..
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({
-    isVisible: state.application.deleteApplication.deleteApplicationFormVisibility
+    isVisible: state.application.deleteApplication.deleteApplicationFormVisibility,
+    applicationList: state.application.applicationList
 })
 
 const mapDispatchToProps = dispatch => ({

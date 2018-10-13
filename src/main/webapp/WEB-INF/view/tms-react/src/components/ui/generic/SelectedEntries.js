@@ -7,7 +7,7 @@ const SelectedEntries = ({ selectedEntries=[], onClearSelectedEntries, onClearSe
         let entriesPerPageCount = mapSelectedEntriesToPages()
         return entriesPerPageCount.map((value, key) => {
             return  (
-                <Label as='a' onClick={() => onSetPaginationPage(key, pageSize) }>
+                <Label as='a' key={key} onClick={() => onSetPaginationPage(key, pageSize) }>
                     {value} selected entries on page {key}
                     <Icon name="delete" onClick={() => onClearSelectedEntriesByPage(key) } />
                 </Label>

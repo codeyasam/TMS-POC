@@ -134,6 +134,16 @@ export const hasErrorOnDeletingApplication = (state=false, action) =>
         action.payload :
         state
         
+export const fetchingApplication = (state=false, action) =>
+    (action.type === C.RETRIEVING_APPLICATIONS) ?
+        action.payload :
+        state
+
+export const applicationSearchText = (state="", action) => 
+    (action.type === C.SET_APPLICATION_SEARCH_TEXT) ?
+        action.payload :
+        state
+
 // pagination
 export const paginationTotal = (state=0, action) => 
     (action.type === C.PAGINATION_TOTAL) ?
@@ -163,6 +173,7 @@ export const paginationNavSize = (state=5, action) =>
         action.payload :
         state
 
+
 export default combineReducers({
     auth: combineReducers({
         username,
@@ -174,6 +185,10 @@ export default combineReducers({
     application: combineReducers({
         applicationList,
         selectedApplicationEntries,
+        retrieveApplication: combineReducers({
+            fetchingApplication,
+            applicationSearchText
+        }),
         addApplication: combineReducers({
             addApplicationFormVisibility,
             addingNewApplication,

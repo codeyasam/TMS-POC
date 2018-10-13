@@ -5,19 +5,20 @@ import { connect } from 'react-redux'
 const mapStateToProps = (state, props) => ({
     total: state.application.pagination.paginationTotal,
     pageSize: state.application.pagination.paginationSize,
+    searchText: state.application.retrieveApplication.applicationSearchText,
     currentPage: state.application.pagination.paginationPage,
     navSize: state.application.pagination.paginationNavSize
 })
 
 const mapDispatchToProps = dispatch => ({
-    onSetPaginationPage(page, pageSize) {
-        dispatch(setPaginationPageRequest(page, pageSize))
+    onSetPaginationPage(searchText, page, pageSize) {
+        dispatch(setPaginationPageRequest(searchText, page, pageSize))
     },
-    onSetPaginationNextPage(currentPage, pageSize) {
-        dispatch(setPaginationPageRequest(currentPage + 1, pageSize))
+    onSetPaginationNextPage(searchText, currentPage, pageSize) {
+        dispatch(setPaginationPageRequest(searchText, currentPage + 1, pageSize))
     },
-    onSetPaginationPreviousPage(currentPage, pageSize) {
-        dispatch(setPaginationPageRequest(currentPage - 1, pageSize))
+    onSetPaginationPreviousPage(searchText, currentPage, pageSize) {
+        dispatch(setPaginationPageRequest(searchText, currentPage - 1, pageSize))
     }
 })
 

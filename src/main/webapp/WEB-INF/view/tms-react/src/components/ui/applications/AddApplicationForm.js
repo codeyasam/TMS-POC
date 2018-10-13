@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Divider, Button, Message, Dimmer, Loader } from 'semantic-ui-react'
 
-const AddApplicationForm = ({ onAddApplication=f=>f, hasError, isAddingApplication, currentPage, pageSize }) => {
+const AddApplicationForm = ({ onAddApplication=f=>f, hasError, isAddingApplication, searchText, currentPage, pageSize }) => {
     
     let _applicationName
     
@@ -10,7 +10,7 @@ const AddApplicationForm = ({ onAddApplication=f=>f, hasError, isAddingApplicati
         e.preventDefault()
         let applicationName = _applicationName.value
         let application = { name: applicationName } 
-        onAddApplication(application, currentPage, pageSize)
+        onAddApplication(application, searchText, currentPage, pageSize)
     }
     
     return (

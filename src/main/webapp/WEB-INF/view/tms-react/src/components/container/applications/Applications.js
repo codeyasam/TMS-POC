@@ -7,13 +7,14 @@ const mapStateToProps = (state, props) => ({
     isSuccessfullyAdded: state.application.addApplication.successfullyAddedApplication,
     isSuccessfullyEdited: state.application.editApplication.successfullyEditedApplication,
     isSuccessfullyDeleted: state.application.deleteApplication.successfullyDeletedApplication,
+    searchText: state.application.retrieveApplication.applicationSearchText,
     currentPage: state.application.pagination.paginationPage,
     pageSize: state.application.pagination.paginationSize
 })
 
 const mapDispatchToProps = dispatch => ({
-    onFetchApplications({ currentPage, pageSize }) {
-        dispatch(fetchApplications(currentPage, pageSize))
+    onFetchApplications({  searchText, currentPage, pageSize }) {
+        dispatch(fetchApplications(searchText, currentPage, pageSize))
     }, 
     onPromptModalClose() {
         dispatch(resetSuccessfullyAddApplication())        

@@ -145,8 +145,9 @@ export const logingIn = isLogingIn => {
     }
 }
 
-export const fetchApplications = (currentPage, pageSize) => dispatch => {
-    fetch(`/applications/?page=${encodeURIComponent(currentPage)}&size=${encodeURIComponent(pageSize)}`, {
+export const fetchApplications = (searchText, currentPage, pageSize) => dispatch => {
+    console.log(currentPage)
+    fetch(`/api/applications/searchByText?input=${encodeURIComponent(searchText)}&page=${encodeURIComponent(currentPage)}&size=${encodeURIComponent(pageSize)}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -156,9 +157,17 @@ export const fetchApplications = (currentPage, pageSize) => dispatch => {
         .then(jsonResponse => {
             console.log(jsonResponse)
             if (jsonResponse.status === 200) {
+                console.log(currentPage + ": current page.")
                 dispatch(retrieveApplications(jsonResponse.data))
                 dispatch(setPaginationTotal(jsonResponse.total))
                 dispatch(setPaginationPage(currentPage))
+                
+                if (jsonResponse.data.length === 0) {
+                    let totalPages = Math.ceil(jsonResponse.total / pageSize)
+                    if (totalPages > 0) {
+                        dispatch(fetchApplications(searchText, totalPages, pageSize))
+                    }
+                }
             }
     })
 }
@@ -170,13 +179,13 @@ export const retrieveApplications = applications => {
     }
 }
 
-export const addApplicationRequest = (application, currentPage, pageSize) => dispatch => {
+export const addApplicationRequest = (application, searchText, currentPage, pageSize) => dispatch => {
     if (!application.name) {
         dispatch(showErrorOnAddingApplication())
         return
     } 
     dispatch(addingApplication())
-    fetch('/applications/', {
+    fetch('/api/applications/', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -190,7 +199,7 @@ export const addApplicationRequest = (application, currentPage, pageSize) => dis
                 //dispatch(addApplication(jsonResponse.data))
                 dispatch(hideAddApplicationForm())
                 dispatch(successfullyAddApplication())
-                fetchApplications(currentPage, pageSize)
+                fetchApplications(searchText, currentPage, pageSize)
             }
         dispatch(completeAddingApplication())
     })
@@ -280,7 +289,7 @@ export const editApplicationRequest = application => dispatch => {
     }
     
     dispatch(editingApplication())
-    fetch('/applications/', {
+    fetch('/api/applications/', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -299,10 +308,10 @@ export const editApplicationRequest = application => dispatch => {
     
 }
 
-export const deleteApplicationRequest = (entriesToDelete, currentPage, pageSize) => dispatch => {
+export const deleteApplicationRequest = (entriesToDelete, searchText, currentPage, pageSize) => dispatch => {
     console.log("request started.")
     dispatch(deletingApplication())
-    fetch('/applications/deleteApplications', {
+    fetch('/api/applications/deleteApplications', {
         method: 'DELETE',
         headers: {
             'Accept': 'application/json',
@@ -317,7 +326,7 @@ export const deleteApplicationRequest = (entriesToDelete, currentPage, pageSize)
             dispatch(hideDeleteApplicationForm())
             dispatch(successfullyDeletedApplication())
             dispatch(clearSelectedApplicationEntries())
-            dispatch(fetchApplications(currentPage, pageSize))
+            dispatch(fetchApplications(searchText, currentPage, pageSize))
         }
         dispatch(completeDeletingApplication())
     })
@@ -471,13 +480,20 @@ export const setPaginationTotal = total => {
     }
 }
 
-export const setPaginationPageRequest = (page, pageSize) => dispatch => {
-    dispatch(fetchApplications(page, pageSize))
+export const setPaginationPageRequest = (searchText, page, pageSize) => dispatch => {
+    dispatch(fetchApplications(searchText, page, pageSize))
 }
 
 export const setPaginationPage = page => {
     return {
         type: C.PAGINATION_PAGE,
         payload: page
+    }
+}
+
+export const setApplicationSearchText = searchText => {
+    return {
+        type: C.SET_APPLICATION_SEARCH_TEXT,
+        payload: searchText
     }
 }

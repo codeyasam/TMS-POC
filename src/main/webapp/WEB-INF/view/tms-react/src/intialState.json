@@ -8,6 +8,10 @@
     "application": {
         "applicationList": [],
         "selectedApplicationEntries": [],
+        "retrieveApplication": {
+            "fetchingApplication": false,
+            "applicationSearchText": ""
+        },
         "addApplication": {
             "addApplicationFormVisibility": false,
             "addingNewApplication": false,
