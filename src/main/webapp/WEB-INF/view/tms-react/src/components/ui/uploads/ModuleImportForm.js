@@ -18,7 +18,7 @@ class ModuleImportForm extends Component {
     }
     
     fetchApplications = () => {
-        fetch('/applications/', {
+        fetch('/api/applications/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

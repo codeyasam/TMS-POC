@@ -36,5 +36,11 @@
             "paginationSize": 5,
             "paginationNavSize": 5
         }
+    },
+    "module": {
+        "moduleList": [],
+        "retrieveModule": {
+            "moduleSearchText": ""
+        }
     }
 }

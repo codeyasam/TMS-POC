@@ -1,5 +1,5 @@
 import AppMenu from '../ui/AppMenu'
-import { performLogout } from '../../actions'
+import { performLogout } from '../../actions/authActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

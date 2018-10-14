@@ -1,5 +1,5 @@
 import LoginForm from '../ui/LoginForm'
-import { performLogin, logingIn, validateAuthentication, clearAuthenticationErrorMessage } from '../../actions'
+import { performLogin, logingIn, validateAuthentication, clearAuthenticationErrorMessage } from '../../actions/authActions'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 

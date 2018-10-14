@@ -1,5 +1,5 @@
 import Applications from '../../ui/applications/Applications'
-import { fetchApplications, resetSuccessfullyAddApplication, resetSuccessfullyEditApplication, resetSuccessfullyDeleteApplication } from '../../../actions'
+import { fetchApplications, resetSuccessfullyAddApplication, resetSuccessfullyEditApplication, resetSuccessfullyDeleteApplication } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

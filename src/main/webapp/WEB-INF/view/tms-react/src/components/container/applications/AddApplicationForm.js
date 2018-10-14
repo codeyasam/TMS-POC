@@ -1,5 +1,5 @@
 import AddApplicationForm from '../../ui/applications/AddApplicationForm'
-import { addApplicationRequest } from '../../../actions'
+import { addApplicationRequest } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

@@ -29,6 +29,14 @@ INSERT INTO Application (name) VALUES ('Application28');
 INSERT INTO Application (name) VALUES ('Application29');
 INSERT INTO Application (name) VALUES ('Application30');
 
+INSERT INTO Module (name, application_id) VALUES ('module1', 1);
+INSERT INTO Module (name, application_id) VALUES ('module2', 1);
+INSERT INTO Module (name, application_id) VALUES ('module3', 1);
+INSERT INTO Module (name, application_id) VALUES ('module4', 1);
+INSERT INTO Module (name, application_id) VALUES ('module5', 1);
+INSERT INTO Module (name, application_id) VALUES ('module6', 1);
+
+
 INSERT INTO END_USER (username, password) VALUES ('codeyasam', '$2a$10$vJcniyvdee2./DXa.VUOle3fv0hgnRM2NNZRSo1crwColif9BvVUi');
 INSERT INTO END_USER (username, password) VALUES ('jojo', '$2a$10$vJcniyvdee2./DXa.VUOle3fv0hgnRM2NNZRSo1crwColif9BvVUi');
 

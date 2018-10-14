@@ -1,5 +1,5 @@
 import CustomRow from '../../ui/generic/CustomRow'
-import { selectApplicationEntry, unselectApplicationEntry } from '../../../actions'
+import { selectApplicationEntry, unselectApplicationEntry } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

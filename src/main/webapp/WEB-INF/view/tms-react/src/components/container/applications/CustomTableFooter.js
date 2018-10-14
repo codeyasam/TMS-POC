@@ -1,5 +1,5 @@
 import CustomTableFooter from '../../ui/generic/CustomTableFooter'
-import { showAddApplicationForm, hideErrorOnAddingApplication, showEditApplicationForm, hideErrorOnEditingApplication, showDeleteApplicationForm, hideErrorOnDeletingApplication } from '../../../actions'
+import { showAddApplicationForm, hideErrorOnAddingApplication, showEditApplicationForm, hideErrorOnEditingApplication, showDeleteApplicationForm, hideErrorOnDeletingApplication } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

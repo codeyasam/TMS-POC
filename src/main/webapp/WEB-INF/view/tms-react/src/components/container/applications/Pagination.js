@@ -1,5 +1,5 @@
 import Pagination from '../../ui/generic/Pagination'
-import { setPaginationPageRequest } from '../../../actions'
+import { setPaginationPageRequest } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

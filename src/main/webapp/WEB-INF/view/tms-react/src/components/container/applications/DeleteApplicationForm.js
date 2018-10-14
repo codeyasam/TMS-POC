@@ -1,5 +1,5 @@
 import DeleteApplicationForm from '../../ui/applications/DeleteApplicationForm'
-import { deleteApplicationRequest, hideDeleteApplicationForm } from '../../../actions'
+import { deleteApplicationRequest, hideDeleteApplicationForm } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

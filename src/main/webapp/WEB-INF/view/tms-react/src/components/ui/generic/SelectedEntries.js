@@ -1,13 +1,13 @@
 import React from 'react'
 import { Segment, Divider, Button, Label, Icon } from 'semantic-ui-react'
 
-const SelectedEntries = ({ selectedEntries=[], onClearSelectedEntries, onClearSelectedEntriesByPage, onSetPaginationPage, pageSize }) => {
+const SelectedEntries = ({ selectedEntries=[], onClearSelectedEntries, onClearSelectedEntriesByPage, onSetPaginationPage, pageSize, searchText }) => {
     
     const setupSelectedEntriesInfo = () => {
         let entriesPerPageCount = mapSelectedEntriesToPages()
         return entriesPerPageCount.map((value, key) => {
             return  (
-                <Label as='a' key={key} onClick={() => onSetPaginationPage(key, pageSize) }>
+                <Label as='a' key={key} onClick={() => onSetPaginationPage(searchText, key, pageSize) }>
                     {value} selected entries on page {key}
                     <Icon name="delete" onClick={() => onClearSelectedEntriesByPage(key) } />
                 </Label>

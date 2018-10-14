@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Segment } from 'semantic-ui-react'
 import Uploads from '../uploads/Uploads'
 import Applications from '../../container/applications/Applications'
+import Modules from '../../container/modules/Modules'
 
 class SidebarBody extends Component {
     
@@ -14,6 +15,9 @@ class SidebarBody extends Component {
             }
             { pathname === "/applications" && 
                 <Applications />
+            }
+            { pathname === "/modules" &&
+                <Modules />
             }
             </Segment>            
         )

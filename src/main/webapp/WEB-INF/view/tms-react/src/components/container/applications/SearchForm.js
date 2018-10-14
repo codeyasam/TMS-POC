@@ -1,5 +1,5 @@
 import SearchForm from '../../ui/applications/SearchForm'
-import { fetchApplications, clearSelectedApplicationEntries, setApplicationSearchText } from '../../../actions'
+import { fetchApplications, clearSelectedApplicationEntries, setApplicationSearchText } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

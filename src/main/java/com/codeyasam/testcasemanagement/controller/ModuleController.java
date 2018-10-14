@@ -49,7 +49,7 @@ import com.codeyasam.testcasemanagement.service.ModuleService;
 import com.codeyasam.testcasemanagement.service.TestCaseService;
 
 @RestController
-@RequestMapping("/modules")
+@RequestMapping("/api/modules")
 public class ModuleController {
 	
 	private ModuleService moduleService;
@@ -112,16 +112,6 @@ public class ModuleController {
 		return response;
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public SingleDataResponse<ModuleDTO> searchById(@PathVariable long id) {
-		SingleDataResponse<ModuleDTO> response = new SingleDataResponse<>();
-		Module module = moduleService.searchById(id);
-		response.setData(moduleService.convertToDTO(module));
-		response.setPrompt("Successfully retrieved module by id.");
-		response.setStatus(HttpStatus.OK.value());
-		return response;
-	}
-	
 	@RequestMapping(value="/searchByName", method=RequestMethod.GET)
 	public SingleDataResponse<ModuleDTO> searchByName(@RequestParam(value="input") String name) {
 		SingleDataResponse<ModuleDTO> response = new SingleDataResponse<>();
@@ -145,6 +135,28 @@ public class ModuleController {
 		response.setStatus(HttpStatus.OK.value());
 		return response;
 	}
+    
+    @RequestMapping(value="/searchByText", method=RequestMethod.GET)
+    public MultipleDataResponse<ModuleDTO> searchByText(@RequestParam(value="input") String searchText, Pageable pageable) {
+        List<Module> moduleList = moduleService.searchByText(searchText, pageable);
+        List<ModuleDTO> moduleDTOList = moduleService.convertListToDTO(moduleList);
+        return new MultipleDataResponse.Builder<ModuleDTO>()
+            .setData(moduleDTOList)
+            .setTotal(moduleService.countSearchByText(searchText))
+            .setPrompt("Successfully retrieved modules.")
+            .setStatus(HttpStatus.OK.value())
+            .build();
+    }    
+
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public SingleDataResponse<ModuleDTO> searchById(@PathVariable long id) {
+		SingleDataResponse<ModuleDTO> response = new SingleDataResponse<>();
+		Module module = moduleService.searchById(id);
+		response.setData(moduleService.convertToDTO(module));
+		response.setPrompt("Successfully retrieved module by id.");
+		response.setStatus(HttpStatus.OK.value());
+		return response;
+	}    
 	
 	@RequestMapping(value="/{id}/testcases/", method=RequestMethod.GET)
 	public MultipleDataResponse<TestCaseDTO> retrieveTestCasesByModuleId(@PathVariable long id, Pageable pageable) {

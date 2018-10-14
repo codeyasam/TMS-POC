@@ -1,5 +1,5 @@
 import FormModal from '../../ui/generic/ModalForm'
-import { hideAddApplicationForm, completeAddingApplication } from '../../../actions'
+import { hideAddApplicationForm, completeAddingApplication } from '../../../actions/applicationActions'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, props) => ({

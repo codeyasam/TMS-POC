@@ -1,6 +1,10 @@
 package com.codeyasam.testcasemanagement.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +19,15 @@ import com.codeyasam.testcasemanagement.repository.ModuleRepository;
 public class ModuleService {
 	
 	private ModuleRepository moduleRepository;
+    private EntityManager entityManager;
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	public ModuleService(ModuleRepository moduleRepository, 
+	public ModuleService(ModuleRepository moduleRepository,
+            EntityManager entityManager,
 			ModelMapper modelMapper) {
 		this.moduleRepository = moduleRepository;
+        this.entityManager = entityManager;
 		this.modelMapper = modelMapper;
 	}
 	
@@ -62,8 +69,30 @@ public class ModuleService {
 		return moduleRepository.findByName(name);
 	}
 	
+    public List<Module> searchByText(String searchText, Pageable pageable) {
+        if (searchText.isEmpty()) searchText = "%%";
+        Query query = entityManager.createQuery("select module from Module module WHERE cast(module.id as string) LIKE :searchText OR module.name LIKE :searchText")
+            .setParameter("searchText", searchText)
+            .setFirstResult(pageable.getOffset())
+            .setMaxResults(pageable.getPageSize());
+        return query.getResultList();
+    }
+    
+    public long countSearchByText(String searchText) {
+        if (searchText.isEmpty()) searchText = "%%";
+        Query query = entityManager.createQuery("select count(module.id) from Module module WHERE cast(module.id as string) LIKE :searchText OR module.name LIKE :searchText")
+            .setParameter("searchText", searchText);
+        return (long) query.getSingleResult();
+    }
+    
 	public ModuleDTO convertToDTO(Module module) {
 		ModuleDTO moduleDTO = modelMapper.map(module, ModuleDTO.class);
 		return moduleDTO;
 	}
+    
+    public List<ModuleDTO> convertListToDTO(List<Module> moduleList) {
+        return moduleList.stream()
+                .map(module -> convertToDTO(module))
+                .collect(Collectors.toList());
+    }
 }
